@@ -1,0 +1,129 @@
+\documentclass[11pt, letterpaper]{article}
+
+% 1. PACKAGES
+% Set margins to match the example PDF
+\usepackage[
+    top=2cm, 
+    bottom=2cm, 
+    left=2.5cm, 
+    right=2.5cm,
+    footskip=1.2cm
+]{geometry} 
+
+% Font settings to match the example (Charter is a common, clean academic font)
+\usepackage{charter}
+\usepackage[T1]{fontenc}
+
+% For customizing section titles
+\usepackage{titlesec} 
+
+% For the page number in the footer
+\usepackage{fancyhdr} 
+
+% For better hyperlinks (optional but good practice)
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=black,
+    linkcolor=black
+}
+
+
+% 2. FORMATTING
+% Remove paragraph indentation and add space between paragraphs
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+
+% Set text alignment to ragged right (not justified)
+\raggedright
+
+% Use Roman numerals for section numbers
+\renewcommand{\thesection}{\Roman{section}}
+
+% Customize section title format: Numbered, Uppercase, Bold
+\titleformat{\section}
+  {\normalfont\large\bfseries\centering} % Format for the whole title (centered)
+  {\thesection.} % The number and a period
+  {1em} % Space between number and title
+  {\MakeUppercase} % The title text itself, in uppercase
+
+% Adjust spacing around section titles
+\titlespacing*{\section}
+  {0pt} % Left margin
+  {3.0ex plus 1ex minus .2ex} % Space before title
+  {2.0ex plus .2ex} % Space after title
+
+% Configure page numbering at the bottom center
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+\cfoot{\thepage} % Set the center footer to the page number
+\renewcommand{\headrulewidth}{0pt} % No header line
+\renewcommand{\footrulewidth}{0pt} % No footer line
+
+
+% 3. DOCUMENT STARTS HERE
+\begin{document}
+
+% --- Custom Header (matching the sop.pdf example) ---
+% Using minipages to create a two-column header effect
+\noindent % Prevents initial indentation
+\begin{minipage}[t]{0.6\textwidth} % Left part of the header
+    \raggedright
+    \textbf{STATEMENT OF PURPOSE} \\
+    % Stanford University % Placeholder university, as in the example
+\end{minipage}%
+\begin{minipage}[t]{0.4\textwidth} % Right part of the header
+    \raggedleft
+    \textbf{Youzhe Song} \\ % Using the name from your original file's metadata
+    Computer Science PhD Applicant, Fall 2026 % Placeholder, as in the example
+\end{minipage}
+
+\vspace{2.5em} % Vertical space after the header block
+
+% --- Your Content (Unchanged) ---
+\section{Introduction: My Research Interests and Perspective}
+
+Current AI models have achieved remarkable success across tasks, yet their internal mechanisms remain largely a “black box.” We know what models can do, and to some extent how they do it in specific details, but we lack an intuitively human-understandable view of their cognitive and reasoning processes. I believe that a key step toward more general and reliable AI lies in understanding and designing the model’s internal information-processing mechanisms. My research centers on two core questions: first, can we construct within the model a \textbf{human-intuitive, stepwise, and organic reasoning trajectory}? Second, how can we enable the model to \textbf{understand and align information from different sources} (e.g., images and text) in a human-like manner?
+
+My goal is to explore how to realize the fusion of these two abilities in a high-dimensional latent space, enabling models not only to “see” and “read” the world, but also to reason about it in a transparent and trustworthy way.
+
+\section{Robust Feature Representations (CoReFace)}
+
+My research journey began with a deep fascination for self-supervised contrastive learning. It does not rely on expensive human annotations; instead, it learns from the structure inherent in data—an elegance and potential that captivated me. However, the realities of a lab with very limited compute and diverse student directions pushed me to forgo brute-force compute and pursue a more fundamental question: how can \textbf{mechanism design} improve model performance?
+
+I found face recognition to be an ideal “sandbox.” I observed its deep kinship with contrastive learning: both carefully shape the geometry of feature distributions in high-dimensional space. Building on this, I proposed the CoReFace framework—an instance of explicit design of internal mechanisms. In this fine-grained recognition task, traditional image augmentations can damage identity information. A key insight I had was that Dropout is essentially a \textbf{feature-level stochastic perturbation} that can provide the necessary views for contrastive learning without corrupting image semantics. By introducing a contrastive-learning-guided regularizer, I actively \textbf{sculpted} the geometric structure of the feature space. Ultimately, this approach \textbf{increased the similarity margin between positive and negative pairs by 15\%}. Throughout, I led the full lifecycle—from problem identification and design to independent validation and writing—shifting from “student” to a truly \textbf{independent researcher} \cite{coreface}.
+
+\section{A Unified Framework for Heterogeneous Data (QGFace)}
+
+After CoReFace, I yearned for research with more immediate real-world relevance. This was reinforced when I scrolled through my phone’s photo album: the built-in face clustering struggled with family photos. I realized that low-quality data arising from composition, lighting, and other real-world factors differ markedly from our common datasets.
+
+QGFace’s \textbf{single-encoder architecture} is my solution—an internal \textbf{information dispatch system}. It simulates a “triage” process: high-quality data follow a classification path, low-quality data follow a contrastive path, and gradient truncation prevents contamination across paths. When contrastive learning underperformed due to insufficient positive pairs, I designed a \textbf{dynamically updated encoder pool} that significantly boosted performance. Racing against a deadline, I structured my days into intense cycles; GPU time became my rest time. Far from being a burden, this was a final \textbf{stress test} of my passion for research. It proved that what drives me is not external expectation, but the intrinsic intellectual joy of solving hard problems. Ultimately, QGFace reached SOTA on low-quality datasets with \textbf{only a 0.3\% trade-off} on high-quality data, validating that my research philosophy can yield elegant, robust, and practical systems \cite{qgface}.
+
+\section{Exploration and Focus: Clarifying My Direction Through Practice}
+
+Despite some academic progress, repeated setbacks and uncertainty in the submission process led to a period of deep confusion and self-doubt. To find clarity, I decided to step into industry and \textbf{stress-test} my intrinsic motivation.
+
+I first joined KeyoneAI, a startup led by former IBM China Chief AI Architect Jie Fang. There, I translated frontier generative AI into product, felt the pulse of rapid iteration, advocated technology, and engaged with users.
+
+Later, I served as the sole technical lead on the organizing committee of the Worldwide Educators Conference (WWEC) \cite{wwec}. Beyond ensuring system reliability, I accelerated the team’s digital transformation, developed internal tools to generate 1000+ complex posters, and connected 3,000 attendees, 1,000 exhibitors, 10+ vendors, and many ad-hoc sessions—working ~80 hours per week for nearly three months. While challenging and rewarding, these experiences still could not replace the pure intellectual excitement and flow I feel in research—witnessing breakthroughs in a field and contributing to them. This deliberate detour granted me unprecedented clarity: my deepest drive is to question fundamentals, refute and rebuild existing solutions, and innovate effectively across disciplines.
+
+More importantly, this exploration helped me reframe what used to be excessive self-scrutiny into a unique research lens. I understand deeply that \textbf{a truly intelligent system is not defined by flawless unidirectional reasoning but by its capacity to handle internal conflict, self-examination, and iterative revision}—the essence of human reflection and “productive struggle.”
+
+\section{Future Research Blueprint: Align Semantics, Reason in Latent Space}
+
+I now plan my Ph.D. research with renewed clarity and conviction. I aim to combine my experience in \textbf{mechanism design} with reflections on \textbf{human cognition}, focusing on two capabilities of large models:
+
+\textbf{1. Building a Unified Semantic Space:} My first goal is to study how to effectively map diverse information into a unified, interpretable latent space. This goes beyond cross-modal mapping—it underpins logical reasoning. I believe that efficient cross-modal semantic alignment is a first step toward foundational models that can comprehensively understand the world. My experience with mixed-quality data in QGFace provides practical grounding for aligning and fusing heterogeneous information.
+
+\textbf{2. Realizing Structured Reasoning in Latent Space:} After achieving semantic alignment, my next goal is to design \emph{structured}, chain-of-thought-like reasoning trajectories within this unified latent space. I want models not only to produce answers, but also to present a decomposable and traceable reasoning process. This improves interpretability and reliability, and may open new avenues for multi-step, open-ended problem solving.
+
+In summary, my research proceeds on two fronts: through \textbf{multimodal alignment}, enabling models to “see” a richer world; and through \textbf{latent reasoning}, enabling them to “think” more clearly and logically.
+
+\section{Conclusion}
+
+With hands-on experience designing internal mechanisms and a clear plan to integrate \emph{semantic alignment} with \emph{latent reasoning}, I am prepared for the challenges of a Ph.D. I look forward to contributing to the next generation of more capable and trustworthy AI systems in a creative and supportive environment.
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\end{document}

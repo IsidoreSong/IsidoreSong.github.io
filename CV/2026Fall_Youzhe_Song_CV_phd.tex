@@ -1,0 +1,282 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=1 cm, % seperation between body and page edge from the top
+    bottom=0.4 cm, % seperation between body and page edge from the bottom
+    left=1 cm, % seperation between body and page edge from the left
+    right=1 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Youzhe Song's CV},
+    pdfauthor={Youzhe Song},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+% 优先使用 XCharter（粗体更明显），不存在则回退 charter
+\IfFileExists{XCharter.sty}{%
+    \usepackage{XCharter}
+}{%
+    \usepackage{charter}
+}
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column seperation
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.25 cm
+}{
+    % bottom space:
+    0.15 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\bullet$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.05 cm,
+        parsep=0.05 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.2}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{\quad|\quad}
+
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont Youzhe Song}
+        \\[2pt]
+        \normalsize
+        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Shanghai, China}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:yanfengz@outlook.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}yanfengz@outlook.com}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+8618019236930}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+86 180 1923 6930}}%
+    \end{header}
+
+    \section{Education}
+        \begin{twocolentry}{
+            \textit{Sept 2021 – June 2024}}
+            \textbf{East China Normal University} (Project 985)
+
+            \textit{M.S. in Computer Science and Technology}
+        \end{twocolentry}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item GPA: 3.77/4.00 (Top 5\%); Admitted via recommendation (waiver of entrance exam)
+                \item \textbf{Research Focus:} Visual Generalization, Contrastive Learning (Advisor: Feng Wang, Associate Researcher)
+            \end{highlights}
+        \end{onecolentry}
+
+        \begin{twocolentry}{
+            \textit{Sept 2017 – June 2021}}
+            \textbf{Donghua University} (Project 211)
+
+            \textit{B.S. in Computer Science and Technology}
+        \end{twocolentry}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item GPA: 4.01/4.30; \textbf{Rank: 2/180}
+                \item \textbf{Honors:} Outstanding Graduate, University Scholarship
+            \end{highlights}
+        \end{onecolentry}
+        
+        \begin{twocolentry}{
+            \textit{Aug 2019 – Aug 2020}}
+            \textbf{Purdue University Northwest}
+
+            \textit{Exchange Student \& Research Assistant, Computer and Information Technology}
+        \end{twocolentry}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item GPA: 3.90/4.00; Research Assistant under Prof. Keyuan Jiang (Department Chair)
+                \item Awarded full CSC scholarship; \textbf{1st Place}, Notre Dame Data Hackathon
+            \end{highlights}
+        \end{onecolentry}
+        
+    \section{Publications}
+        \begin{onecolentry}
+            \begin{enumerate}[
+                label=\arabic*.,
+                topsep=0pt,
+                parsep=0pt,
+                partopsep=0pt,
+                itemsep=0.1cm,
+                leftmargin=*
+            ]
+                \item \textbf{Youzhe Song}, Feng Wang. "CoReFace: Sample-guided Contrastive Regularization for Deep Face Recognition." \textit{Pattern Recognition}, vol. 152, art. 110483, 2024.
+                \href{https://doi.org/10.1016/j.patcog.2024.110483}{\faLink}
+                \href{https://github.com/IsidoreSong/CoreFace}{\faGithub}
+                
+                \item \textbf{Youzhe Song}, Feng Wang. "QGFace: Quality-Guided Joint Training For Mixed-Quality Face Recognition." \textit{In Proceedings of the 2024 IEEE International Conference on Automatic Face and Gesture Recognition (FG)}.
+                \href{https://arxiv.org/abs/2312.17494}{\faLink}
+                \href{https://github.com/IsidoreSong/QGFace}{\faGithub}
+            \end{enumerate}
+        \end{onecolentry}
+
+    \section{Research Experience}
+        \begin{onecolentry}
+            \textbf{CoReFace: Improving Generalization with Contrastive Regularization}
+            \begin{highlights}
+                \item \textbf{Identified model brittleness} in open-set recognition as a key challenge to generalization.
+                \item Proposed \textbf{CoReFace}, a framework using \textbf{contrastive learning} as a regularizer to learn a more discriminative feature space, \textbf{increasing the similarity margin for positive/negative pairs by 15\%}.
+                \item Achieved state-of-the-art performance by applying self-supervised principles to supervised learning, offering a new path for building more robust recognition models.
+            \end{highlights}
+        \end{onecolentry}
+
+        \begin{onecolentry}
+            \textbf{QGFace: Unified Representation Learning for Heterogeneous Data}
+            \begin{highlights}
+                \item \textbf{Addressed the critical, real-world issue} of training a single model on heterogeneous-quality data.
+                \item Designed a \textbf{unified, single-encoder} with a quality-aware strategy, improving efficiency and scalability.
+                \item Reached state-of-the-art on mixed-quality benchmarks with a practical solution for robust recognition.
+            \end{highlights}
+        \end{onecolentry}
+
+% --- START OF NEW Experience SECTION CODE ---
+\section{Industry Experience}
+    \begin{twocolentry}{
+        \textit{June 2024 – Present}
+    }
+        \textbf{Technical Manager}
+        
+        \textit{Worldwide Educators Conference (\href{https://www.wwec820.com/}{WWEC})}
+        
+    \end{twocolentry}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Managed internal and external technical associations and developed an automated tool to generate 1000+ custom conference assets, saving an estimated 100+ hours of manual design work.
+            \item Stimulated our team to digitize the storage of data and the pipeline to further support the growth of this project.
+            \item Established the official website After repeated discussions among colleagues from multiple departments. \href{https://www.wwec820.com}{\faLink}
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.1cm}
+
+    \begin{twocolentry}{
+        \textit{May 2023 – Oct 2023}
+    }
+        \textbf{AI Full-Stack Developer Intern}
+        
+        \textit{Shanghai KeyoneAI Technology Co., Ltd.}
+    \end{twocolentry}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item \textbf{Supervisor:} \href{https://www.linkedin.com/in/jie-fang-28293740}{Jie Fang (former Chief AI Architect, IBM China)}
+            \item Delivered a powerful design tool by engineering a full-stack application; fine-tuned \textbf{Stable Diffusion} with \textbf{LoRA} and \textbf{ControlNet} to enable intuitive, controllable features like text-to-image and inpainting.
+               \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.1cm}
+
+    \begin{twocolentry}{
+        \textit{May 2021 – Aug 2021}
+    }
+        \textbf{AI Algorithm Intern}
+        
+        \textit{Shanghai Feifan Technology Co., Ltd.}
+    \end{twocolentry}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item \textbf{Supervisor:} \href{https://www.linkedin.com/in/jie-fang-28293740}{Jie Fang (former Chief AI Architect, IBM China)}
+            \item Developed a fashion aesthetics recommendation system leading to a \textbf{20\% inventory reduction} for the client.
+            \item Built the core of the system by designing a color block classification model and establishing a hierarchical rule-based engine to generate aesthetic clothing combinations.            % \item Initiated the project's data pipeline from scratch, implementing web scraping, ETL processes.
+        \end{highlights}
+    \end{onecolentry}
+% --- END OF NEW Experience SECTION CODE ---
+    
+    \section{Skills}
+        \begin{onecolentry}
+            \textbf{Languages:} Python, JavaScript
+        \end{onecolentry}
+        \begin{onecolentry}
+            \textbf{Frameworks \& Tools:} PyTorch, PyTorch Lightning, Docker, WandB, Gradio
+        \end{onecolentry}
+        \begin{onecolentry}
+            \textbf{Systems:} HPC Cluster Management, Server Maintenance
+        \end{onecolentry}
+\end{document}

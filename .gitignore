@@ -1,0 +1,36 @@
+# Editor-specific files
+# .vscode/
+AcademicMap/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+texput.log
+
+# LaTeX auxiliary and build files
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xwm
+
+# TeX4ht generated files
+*.4ct
+*.4tc
+*.idv
+*.lg
+*.tmp
+*.xref

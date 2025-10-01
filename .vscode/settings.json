@@ -1,0 +1,150 @@
+{
+    "latex-workshop.latex.tools": [
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": ["-synctex=1", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "%DOCFILE%"]
+        },
+        {
+            "name": "latexmk (xelatex)",
+            "command": "latexmk",
+            "args": [
+                "-xelatex",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-halt-on-error",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": ["%DOCFILE%"]
+        },
+        {
+            "name": "make4ht",
+            "command": "make4ht",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "htxelatex",
+            "command": "htxelatex",
+            "args": [
+                "%DOCFILE%",
+                "html,fn-fa5,charset=utf-8"
+            ]
+        },
+        {
+            "name": "hevea",
+            "command": "hevea",
+            "args": [
+                "%DOC%.tex",
+                "-o",
+                "%DOC%.html"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "xelatex -> bibtex -> xelatex*2",
+            "tools": ["xelatex", "bibtex", "xelatex", "xelatex"]
+        },
+        {
+            "name": "HTML: Simple (make4ht)",
+            "tools": [
+                "make4ht"
+            ]
+        },
+        {
+            "name": "HTML: Chinese (htxelatex)",
+            "tools": [
+                "htxelatex"
+            ]
+        },
+        {
+            "name": "HTML: English + BibTeX (make4ht)",
+            "tools": [
+                "make4ht",
+                "bibtex",
+                "make4ht"
+            ]
+        },
+        {
+            "name": "HTML: Chinese + BibTeX (htxelatex)",
+            "tools": [
+                "htxelatex",
+                "bibtex",
+                "htxelatex"
+            ]
+        },
+        {
+            "name": "hevea (LaTeX to HTML)",
+            "tools": [
+                "hevea"
+            ]
+        },
+        {
+            "name": "XeLaTeX",
+            "tools": ["xelatex"]
+        },
+        {
+            "name": "PDFLaTeX",
+            "tools": [
+                {
+                    "name": "pdflatex",
+                    "command": "pdflatex",
+                    "args": ["-synctex=1", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "%DOCFILE%"]
+                }
+            ]
+        },
+        {
+            "name": "BibTeX",
+            "tools": ["bibtex"]
+        },
+        {
+            "name": "LaTeXmk",
+            "tools": ["latexmk"]
+        },
+        {
+            "name": "pdflatex -> bibtex -> pdflatex*2",
+            "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"]
+        }
+    ],
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.synctex.gz",
+        "*.4ct",
+        "*.4tc",
+        "*.dvi",
+        "*.idv",
+        "*.lg",
+        "*.tmp",
+        "*.xref"
+    ],
+
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.autoClean.run": "onSucceeded",
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.message.update.show": false
+}

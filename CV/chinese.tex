@@ -1,0 +1,338 @@
+% !TEX TS-program = xelatex
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=1 cm, % seperation between body and page edge from the top
+    bottom=1 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 0, 0} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+
+
+% Packages:
+
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={宋有哲的简历},
+    pdfauthor={宋有哲},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+\usepackage{fontspec} % Required for XeLaTeX/LuaLaTeX
+\usepackage{charter}
+
+% Font setup for Chinese characters
+\usepackage{xeCJK}
+% \setmainfont{Noto Serif CJK SC}
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column seperation
+\pagenumbering{gobble} % no page numbering
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0 cm + 0.00001 cm
+    }{
+        0 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Last updated in September 2024}\hspace{\widthof{Last updated in September 2024}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{\quad|\quad}
+
+    \begin{header}
+        \fontsize{25 pt}{25 pt}\selectfont 宋有哲
+
+        \vspace{5 pt}
+
+    \normalsize
+    % --- 联系信息第一行：邮箱和电话 ---
+    \mbox{\hrefWithoutArrow{mailto:yanfengz@outlook.com}{\faEnvelope\space yanfengz@outlook.com} \AND \hrefWithoutArrow{tel:+8618019236930}{\faPhone\space +86 180 1923 6930}}% <-- 请将 +86 123-4567-8910 替换为您的电话号码
+    % \\ % 换行
+    % --- 联系信息第二行：地址 ---
+    \AND\mbox{\faMapMarker\space 上海市浦东新区郭守敬路498号26栋}%
+    \end{header}
+
+    \vspace{5 pt - 0.3 cm}
+
+    \section{个人简介}
+    \begin{onecolentry}
+    	\parbox{\linewidth}{
+		我对构建通用且鲁棒的基础模型充满热情。我专注于通过自监督对比学习提升模型的底层学习和泛化能力。我具备从零开始快速掌握并部署AI系统的全栈能力。我渴望在博士阶段继续探索如何让模型理解真实世界与概念之间关系，为构建更可信赖的基础模型做出贡献。
+		}
+    \end{onecolentry}
+
+
+    \section{教育背景}
+
+        \begin{twocolentry}{
+            2021年09月 – 2024年06月
+        }
+            \textbf{华东师范大学 (985)} | 硕士, 计算机科学与技术
+        \end{twocolentry}
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item GPA: 3.77/4.00 (专业前5\%), \textbf{直研保送}
+                \item \textbf{研究方向：}自监督表示学习、视觉模型的泛化能力、面向开放世界数据的对比学习。
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+        
+        \begin{twocolentry}{
+            2017年09月 – 2021年06月
+        }
+            \textbf{东华大学 (211)} | 本科, 计算机科学与技术
+        \end{twocolentry}
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item GPA: 4.00/4.30, \textbf{专业排名: 2/180}
+                \item \textbf{荣誉:} \textbf{优秀毕业生 (Outstanding Graduate)}, 东华大学奖学金, 恒逸一等奖学金
+            \end{highlights}
+        \end{onecolentry}
+        
+        \vspace{0.2 cm}
+
+        \begin{twocolentry}{
+            2019年08月 – 2020年08月
+        }
+            \textbf{普渡大学 (Purdue University)} | 交换生与科研助理, 计算机通信技术
+        \end{twocolentry}
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item GPA: 3.9/4.0
+                \item 获国家留学基金委全额奖学金；\textbf{冠军 (1st Place)}，美国圣母大学 Data Hackathon。
+            \end{highlights}
+        \end{onecolentry}
+        
+    \section{学术出版 (Publications)}
+
+\begin{onecolentry}
+    \begin{enumerate}[
+        label=\arabic*.,
+        topsep=0pt,
+        parsep=0pt,
+        partopsep=0pt,
+        itemsep=0.2cm,
+        leftmargin=*
+    ]
+        \item \textbf{Youzhe Song}, Feng Wang. CoReFace: Sample-guided Contrastive Regularization for Deep Face Recognition.
+        Pattern Recognition 152 (2024): 110483.
+        \href{https://doi.org/10.1016/j.patcog.2024.110483}{\faLink}
+        \href{https://github.com/IsidoreSong/CoreFace}{\faGithub}
+        
+        \item \textbf{Youzhe Song}, Feng Wang. QGFace: Quality-Guided Joint Training For Mixed-Quality Face Recognition.
+        Proceedings of the Computer Vision and Pattern Recognition Conference. 2024. \href{https://arxiv.org/abs/2312.17494}{\faLink}
+        \href{https://github.com/IsidoreSong/QGFace}{\faGithub}
+    \end{enumerate}
+\end{onecolentry}
+
+    \section{科研经历 (Research Experience)}
+
+        \begin{onecolentry}
+            
+            \begin{highlights}
+                \item \textbf{项目: CoReFace（发表于 Pattern Recognition 2024）}
+                \begin{highlightsforbulletentries}
+                    \item 借鉴\textbf{多模态对齐模型 (如CLIP)} 的核心思想，将\textbf{对比学习}作为一种强正则化手段，强制模型学习一个语义更一致、类间距更大的特征空间，显著提升了模型在开放集场景下的泛化能力。
+                    \item 设计的联合训练损失超越了\textbf{SOTA}方法，并将正负样本对相似度差距提升约15\%。
+                \end{highlightsforbulletentries}
+                \item \textbf{项目: QGFace (发表于 FG 2024)}
+                \begin{highlightsforbulletentries}
+                    \item 探索了面向异构质量视觉数据的统一表示学习框架。
+                    \item 设计了一个单一编码器架构，无需多个独立模型即可处理从高清到低清的混合数据输入。
+                \end{highlightsforbulletentries}
+            \end{highlights}
+        \end{onecolentry}
+
+\section{工作与实习经历}
+
+    \begin{onecolentry}
+        \large\textbf{世界教育者大会 (Worldwide Educators Conference)}，上海
+    \end{onecolentry}
+    \begin{twocolentry}{
+        2024年06月 – 今
+    }
+        \textbf{技术经理}
+    \end{twocolentry}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item 负责与系统、销售和技术供应商对接，定义并协调技术需求；管理域名、网站和服务器的日常维护。
+            \item 开发并维护海报自动化生成工具，为超过400位嘉宾、30场会议和100家企业自动化生成定制海报。
+        \end{highlights}
+    \end{onecolentry}
+    
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+         \large\textbf{上海启元科技有限公司}, 上海
+    \end{onecolentry}
+    \begin{twocolentry}{
+        2023年05月 – 2023年10月
+    }
+       \textbf{全栈开发实习生}
+    \end{twocolentry}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item \textbf{导师 (Supervisor):} \href{https://www.linkedin.com/in/jie-fang-28293740}{方杰 (前IBM中国首席AI架构师, 前工商银行AI实验室负责人)}
+            \item 独立完成服装设计辅助项目从模型微调 (LoRA)、UI定制、提示词工程到后端部署的全流程。
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+    
+    \begin{onecolentry}
+        \large\textbf{上海斐樊科技有限公司}, 上海
+    \end{onecolentry}
+    \begin{twocolentry}{
+        2021年05月 – 2021年08月
+    }
+        \textbf{智能算法实习生}
+    \end{twocolentry}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item \textbf{导师 (Supervisor):} \href{https://www.linkedin.com/in/jie-fang-28293740}{方杰 (前IBM中国首席AI架构师, 前工商银行AI实验室负责人)}
+            \item 设计并开发色块分类系统辅助服装专家分类色彩，数据可视化，BI分析,指导搭配推荐算法偏好。
+            % \item 爬虫获取服装图片，ETL冷热更新，推荐算法冷启动。
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{专业技能}
+        
+        \begin{onecolentry}
+            \begin{highlightsforbulletentries}
+                Python, PyTorch, PyTorch Lightning Docker, Git, WandB, Gradio, HPC集群管理
+            \end{highlightsforbulletentries}
+        \end{onecolentry}
+
+\end{document}
