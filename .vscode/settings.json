@@ -49,6 +49,10 @@
     ],
     "latex-workshop.latex.recipes": [
         {
+            "name": "XeLaTeX",
+            "tools": ["xelatex"]
+        },
+        {
             "name": "xelatex -> bibtex -> xelatex*2",
             "tools": ["xelatex", "bibtex", "xelatex", "xelatex"]
         },
@@ -85,10 +89,6 @@
             "tools": [
                 "hevea"
             ]
-        },
-        {
-            "name": "XeLaTeX",
-            "tools": ["xelatex"]
         },
         {
             "name": "PDFLaTeX",

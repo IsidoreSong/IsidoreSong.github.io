@@ -5,6 +5,7 @@
 .XCharter-Bold-tlf-t1-{font-weight: bold; font-name: 'XCharter', serif}
 .XCharter-Bold-tlf-t1-x-x-240{font-size:240%;font-weight: bold; font-name: 'XCharter', serif}
 .XCharter-Bold-tlf-t1-x-x-240{font-weight: bold; font-name: 'XCharter', serif}
+.fa5free1solid-x-x-80{font-size:80%; font-family: 'Font Awesome 5 Free Solid', serif;}
 .fa5free2solid-x-x-80{font-size:80%; font-family: 'Font Awesome 5 Free Solid', serif;}
 .fa5free1regular-x-x-80{font-size:80%; font-family: 'Font Awesome 5 Free Regular', serif;}
 .XCharter-Italic-tlf-t1-{font-style: italic; font-name: 'XCharter', serif}
@@ -179,8 +180,5 @@ table.multline, table.multline-star {width:100%;}
 td.gather {text-align:center; }
 table.gather {width:100%;}
 div.gather-star {text-align:center;}
-.small-caps{font-variant: small-caps;}
 /* end css.sty */
-
-
 

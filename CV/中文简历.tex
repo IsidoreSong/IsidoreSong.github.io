@@ -1,4 +1,4 @@
-% !TEX TS-program = xelatex
+% !TEX TS-program = XeLaTex
 \documentclass[10pt, letterpaper]{article}
 
 % Packages:
@@ -79,14 +79,14 @@
     0.2 cm
 } % section title spacing
 
-\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
+\renewcommand\labelitemi{$\bullet$} % custom bullet points
 \newenvironment{highlights}{
     \begin{itemize}[
-        topsep=0.10 cm,
-        parsep=0.10 cm,
+        topsep=0.05 cm,
+        parsep=0.05 cm,
         partopsep=0pt,
         itemsep=0pt,
-        leftmargin=0 cm + 10pt
+        leftmargin=0.4 cm + 10pt
     ]
 }{
     \end{itemize}
@@ -95,11 +95,11 @@
 
 \newenvironment{highlightsforbulletentries}{
     \begin{itemize}[
-        topsep=0.10 cm,
-        parsep=0.10 cm,
+        topsep=0.05 cm,
+        parsep=0.05 cm,
         partopsep=0pt,
         itemsep=0pt,
-        leftmargin=10pt
+        leftmargin=0.4 cm + 10pt
     ]
 }{
     \end{itemize}
@@ -173,21 +173,23 @@
         \vspace{5 pt}
 
     \normalsize
-    % --- 联系信息第一行：邮箱和电话 ---
-    \mbox{\hrefWithoutArrow{mailto:yanfengz@outlook.com}{\faEnvelope\space yanfengz@outlook.com} \AND \hrefWithoutArrow{tel:+8618019236930}{\faPhone\space +86 180 1923 6930}}% <-- 请将 +86 123-4567-8910 替换为您的电话号码
+    \mbox{\href{https://isidoresong.github.io/}{\faHome\space Homepage}}%
+    % \mbox{\href{https://isidoresong.github.io/}{\color{black}{\footnotesize\faHome}\hspace*{0.13cm}Homepage}}%
+    \AND \mbox{\hrefWithoutArrow{mailto:yanfengz@outlook.com}{\faEnvelope\space yanfengz@outlook.com}
+    \AND \hrefWithoutArrow{tel:+8618019236930}{\faPhone\space +86 180 1923 6930}}% <-- 请将 +86 123-4567-8910 替换为您的电话号码
     % \\ % 换行
     % --- 联系信息第二行：地址 ---
-    \AND\mbox{\faMapMarker\space 上海市浦东新区郭守敬路498号26栋}%
+    \AND\mbox{\faMapMarker\space 上海市浦东软件园}%
     \end{header}
 
     \vspace{5 pt - 0.3 cm}
 
-    \section{个人简介}
-    \begin{onecolentry}
-    	\parbox{\linewidth}{
-		我对构建通用且鲁棒的基础模型充满热情。我专注于通过自监督对比学习提升模型的底层学习和泛化能力。我具备从零开始快速掌握并部署AI系统的全栈能力。我渴望在博士阶段继续探索如何让模型理解真实世界与概念之间关系，为构建更可信赖的基础模型做出贡献。
-		}
-    \end{onecolentry}
+    % \section{个人简介}
+    % \begin{onecolentry}
+    % 	\parbox{\linewidth}{
+	% 	我对构建通用且鲁棒的基础模型充满热情。我专注于通过自监督对比学习提升模型的底层学习和泛化能力。我具备从零开始快速掌握并部署AI系统的全栈能力。我渴望在博士阶段继续探索如何让模型理解真实世界与概念之间关系，为构建更可信赖的基础模型做出贡献。
+	% 	}
+    % \end{onecolentry}
 
 
     \section{教育背景}
@@ -258,20 +260,21 @@
 \end{onecolentry}
 
     \section{科研经历 (Research Experience)}
-
         \begin{onecolentry}
-            
+            \textbf{CoReFace: 通过对比正则化改善泛化能力}
             \begin{highlights}
-                \item \textbf{项目: CoReFace（发表于 Pattern Recognition 2024）}
-                \begin{highlightsforbulletentries}
-                    \item 借鉴\textbf{多模态对齐模型 (如CLIP)} 的核心思想，将\textbf{对比学习}作为一种强正则化手段，强制模型学习一个语义更一致、类间距更大的特征空间，显著提升了模型在开放集场景下的泛化能力。
-                    \item 设计的联合训练损失超越了\textbf{SOTA}方法，并将正负样本对相似度差距提升约15\%。
-                \end{highlightsforbulletentries}
-                \item \textbf{项目: QGFace (发表于 FG 2024)}
-                \begin{highlightsforbulletentries}
-                    \item 探索了面向异构质量视觉数据的统一表示学习框架。
-                    \item 设计了一个单一编码器架构，无需多个独立模型即可处理从高清到低清的混合数据输入。
-                \end{highlightsforbulletentries}
+                \item \textbf{识别出开放集识别中的模型脆弱性}是泛化的关键挑战。
+                \item 提出\textbf{CoReFace}框架，使用\textbf{对比学习}作为正则化器，学习更具辨别力的特征空间，\textbf{将正/负样本对的相似度边距提高了15\%}。
+                \item 通过将自监督原则应用于监督学习，实现了最先进的性能，为构建更鲁棒的识别模型提供了新途径。
+            \end{highlights}
+        \end{onecolentry}
+        \vspace{0.2 cm}
+        \begin{onecolentry}
+            \textbf{QGFace: 异构数据的统一表示学习}
+            \begin{highlights}
+                \item \textbf{解决了在异构质量数据上训练单个模型的关键现实问题}。
+                \item 设计了带有质量感知策略的\textbf{统一单编码器}，提高了效率和可扩展性。
+                \item 在混合质量基准上达到了最先进水平，为鲁棒识别提供了实用的解决方案。
             \end{highlights}
         \end{onecolentry}
 
@@ -287,7 +290,8 @@
     \end{twocolentry}
     \begin{onecolentry}
         \begin{highlights}
-            \item 负责与系统、销售和技术供应商对接，定义并协调技术需求；管理域名、网站和服务器的日常维护。
+            \item 负责与系统、销售和技术供应商对接，定义并协调技术需求管理域名、网站和服务器的日常维护。
+            \item 鼓励、培训团队数字化，稳定存档并实现支持可持续成长的数据流程。
             \item 开发并维护海报自动化生成工具，为超过400位嘉宾、30场会议和100家企业自动化生成定制海报。
         \end{highlights}
     \end{onecolentry}
@@ -305,7 +309,7 @@
     \begin{onecolentry}
         \begin{highlights}
             \item \textbf{导师 (Supervisor):} \href{https://www.linkedin.com/in/jie-fang-28293740}{方杰 (前IBM中国首席AI架构师, 前工商银行AI实验室负责人)}
-            \item 独立完成服装设计辅助项目从模型微调 (LoRA)、UI定制、提示词工程到后端部署的全流程。
+            \item 通过设计一个全栈应用程序，交付了一款功能强大的设计工具；利用LoRA和ControlNet对Stable Diffusion进行了微调，以实现直观、可控的功能，如文本生成图像和图像修复。
         \end{highlights}
     \end{onecolentry}
 
@@ -322,17 +326,19 @@
     \begin{onecolentry}
         \begin{highlights}
             \item \textbf{导师 (Supervisor):} \href{https://www.linkedin.com/in/jie-fang-28293740}{方杰 (前IBM中国首席AI架构师, 前工商银行AI实验室负责人)}
-            \item 设计并开发色块分类系统辅助服装专家分类色彩，数据可视化，BI分析,指导搭配推荐算法偏好。
-            % \item 爬虫获取服装图片，ETL冷热更新，推荐算法冷启动。
+            \item 开发了一个时尚美学搭配推荐系统，为客户减少了 20\% 的库存。
         \end{highlights}
     \end{onecolentry}
 
     \section{专业技能}
-        
         \begin{onecolentry}
-            \begin{highlightsforbulletentries}
-                Python, PyTorch, PyTorch Lightning Docker, Git, WandB, Gradio, HPC集群管理
-            \end{highlightsforbulletentries}
+            \textbf{编程语言:} Python, JavaScript
+        \end{onecolentry}
+        \begin{onecolentry}
+            \textbf{框架与工具:} PyTorch, PyTorch Lightning, Docker, WandB, Gradio
+        \end{onecolentry}
+        \begin{onecolentry}
+            \textbf{系统:} HPC集群, 服务器维护
         \end{onecolentry}
 
 \end{document}
