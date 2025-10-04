@@ -57,6 +57,77 @@
     </style>
   </head>
   <body>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        padding-top: 60px; /* Adjust based on nav-bar height */
+      }
+      h2[id] {
+        scroll-margin-top: 70px; /* Offset for anchor links to avoid being hidden by nav bar */
+      }
+      .main-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        z-index: 1000;
+        padding: 0 20px;
+        box-sizing: border-box;
+      }
+      .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px; /* Set a fixed height */
+        max-width: 1000px; /* Optional: constrain width on large screens */
+        margin: 0 auto; /* Center the container */
+      }
+      .nav-left a, .nav-center a, .nav-right a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        padding: 5px 10px;
+        transition: color 0.3s;
+        white-space: nowrap; /* Prevent links from wrapping */
+      }
+      .nav-left a:hover, .nav-center a:hover, .nav-right a:hover {
+        color: #007bff;
+      }
+      .nav-left, .nav-right {
+        flex-shrink: 0; /* Prevent left/right from shrinking */
+      }
+      .nav-center {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto; /* Allow scrolling on small screens */
+      }
+    </style>
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="nav-left">
+          <a href="CV/2026Fall_Youzhe_Song_CV_phd.html" target="_blank">CV</a>
+          <a href="SOP/SOP.html" target="_blank">SOP</a>
+        </div>
+        <div class="nav-center">
+          <a href="#research">Research</a>
+          <a href="#education">Education</a>
+          <a href="#publications">Publications</a>
+          <a href="#experience">Experience</a>
+          <a href="#interests">Interests</a>
+          <a href="#reading-list">Reading List</a>
+          <a href="#gallery">Gallery</a>
+        </div>
+        <div class="nav-right">
+          <a href="#">Home</a>
+        </div>
+      </div>
+    </nav>
     <!-- The Modal -->
     <div id="myModal" class="modal">
       <span class="close">&times;</span>
@@ -100,7 +171,7 @@
           </tbody></table>
 
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <h2>Research</h2>
+            <h2 id="research">Research</h2>
             <tr>
               <td style="width:100%;vertical-align:middle">
                 <p>
@@ -118,7 +189,7 @@
           <br>
 
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <h2>Education</h2>
+            <h2 id="education">Education</h2>
             <tr>
               <td style="padding:20px;width:25%;vertical-align:middle"><img src="assets/ECNU.png" alt="ECNU Logo" width="100" style="display: block; margin-left: auto; margin-right: auto;"></td>
               <td width="75%" valign="center">
@@ -147,7 +218,7 @@
           <br>
 
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <h2>Publications</h2>
+            <h2 id="publications">Publications</h2>
             <tr style="padding:20px;border-spacing:20px;">
               <td style="padding:20px;width:40%;vertical-align:middle">
                 <img src="assets/data/CoReFace.png" alt="CoReFace Project" width="100%" class="publication-image" style="border-style: none; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); transition: filter 0.3s ease;">
@@ -190,7 +261,7 @@
           <br>
 
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <h2>Industry Experience</h2>
+            <h2 id="experience">Industry Experience</h2>
             <tr>
               <td style="padding:20px;width:15%;vertical-align:middle"><img src="assets/wwec.jpg" alt="WWEC Logo" width="50" style="display: block; margin-left: auto; margin-right: auto;"></td>
               <td width="85%" valign="center">
