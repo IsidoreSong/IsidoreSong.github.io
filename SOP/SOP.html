@@ -7,7 +7,8 @@
 <link href='SOP.css' rel='stylesheet' type='text/css' /> 
 <meta content='SOP.tex' name='src' /> 
 </head><body>
-<!-- l. 71 --><p class='noindent'></p><div class='minipage'><span class='bchb8t-x-x-109'>STATEMENT
+<!-- l. 84 --><p class='noindent'></p><div class='minipage'>
+<span class='bchb8t-x-x-109'>STATEMENT
 OF
 PURPOSE</span><br />                                             </div><div class='minipage'>                                                               <span class='bchb8t-x-x-109'>Youzhe
                                                                   Song</span><br />
@@ -20,123 +21,360 @@ PURPOSE</span><br />                                             </div><div clas
                                                                         Fall
                                                                       2026</div>
 <h3 class='sectionHead' id='introduction-my-research-interests-and-perspective'><span class='titlemark'>I    </span> <a id='x1-1000I'></a>Introduction: My Research Interests and Perspective</h3>
-<!-- l. 89 --><p class='noindent'>Current AI models have achieved remarkable success across tasks, yet their internal mechanisms
-remain largely a ~black box.~ We know what models can do, and to some extent how they do it
-in specific details, but we lack an intuitively human-understandable view of their cognitive
-and reasoning processes. I believe that a key step toward more general and reliable AI lies in
-understanding and designing the model’s internal information-processing mechanisms. My
-research interests center on two core questions: First, can we construct within the model a
-<span class='bchb8t-x-x-109'>human-intuitive, stepwise, and organic reasoning trajectory</span>? Second, how can we enable the model to
-<span class='bchb8t-x-x-109'>understand and align information from different sources </span>(e.g., images and text) in a human-like
-manner?
-</p><!-- l. 91 --><p class='noindent'>My goal is to explore how to realize the fusion of these two abilities in a high-dimensional latent space,
+<!-- l. 102 --><p class='noindent'>Current AI models have achieved remarkable success across tasks, yet their internal mechanisms remain
+largely a ~black box.~ We know what models can do, and to some extent how they do it in specific
+details, but we lack an intuitively human-understandable view of their cognitive and reasoning
+processes. I believe that a key step toward more general and reliable AI lies in understanding
+and designing the model’s internal information-processing mechanisms. My research interests
+center on two core questions: First, how can we enable the model to <span class='bchb8t-x-x-109'>understand and align
+information from different modals</span> (e.g., images and text) in a human-like manner? Second,
+can we construct within the model a <span class='bchb8t-x-x-109'>human-intuitive, stepwise, and organic reasoning
+trajectory</span>?
+</p><!-- l. 104 --><p class='noindent'>My goal is to explore how to realize the fusion of these two abilities in a high-dimensional latent space,
 enabling models not only to ~see~ and ~read~ the world, but also to reason about it in a transparent and
 trustworthy way.
-</p><!-- l. 93 --><p class='noindent'>
-</p>
-<h3 class='sectionHead' id='robust-feature-representations-coreface'><span class='titlemark'>II    </span> <a id='x1-2000II'></a>Robust Feature Representations (CoReFace)</h3>
-<!-- l. 95 --><p class='noindent'>My research journey began with a deep fascination for self-supervised contrastive learning. It does
-not rely on expensive human annotations; instead, it learns from the structure inherent in
-data. Its elegance and potential captivated me. However, the realities of a lab with very limited
-compute and diverse student directions pushed me to give it up and pursue a more fundamental
-alternative.
-</p><!-- l. 97 --><p class='noindent'>I found face recognition to be an ideal ~sandbox.~ I observed its deep kinship with contrastive learning:
-both carefully shape the geometry of feature distributions in high-dimensional space and share the same
-goal the to be generalized in open-set. Building on this, I proposed the CoReFace framework, which is an
-instance of explicit design of internal mechanisms. In this fine-grained recognition task, traditional image
-augmentations can damage identity information. A key insight I had was that Dropout is essentially a
-                                                                                          
-                                                                                          
-<span class='bchb8t-x-x-109'>feature-level stochastic perturbation </span>that can provide the necessary views for contrastive
-learning without corrupting image semantics. After introducing contrastive learning, I further
-enhanced the weak supervising signal to make it work and rearange the pair construction in
-contrastive learning to avoid semantical repeat signal problem in the unified training. All of
-these made the framework actively <span class='bchb8t-x-x-109'>regularized </span>the geometric structure of the feature space.
-Ultimately, this approach <span class='bchb8t-x-x-109'>increased the similarity margin between positive and negative
-pairs by 15%</span>. Throughout, I led the full lifecycle—from problem identification and design to
-independent validation and writing—shifting from ~student~ to a truly <span class='bchb8t-x-x-109'>independent researcher
-</span><span class='cite'>[<a href='#Xcoreface'>1</a>]</span>.
-</p><!-- l. 99 --><p class='noindent'>
-</p>
-<h3 class='sectionHead' id='a-unified-framework-for-heterogeneous-data-qgface'><span class='titlemark'>III    </span> <a id='x1-3000III'></a>A Unified Framework for Heterogeneous Data (QGFace)</h3>
-<!-- l. 101 --><p class='noindent'>After CoReFace, I yearned for research with more immediate real-world relevance. This was reinforced
-when I scrolled through my phone’s photo album: the built-in face clustering struggled with family photos.
-I realized that low-quality data arising from composition, lighting, and other real-world factors differ
-markedly from our common datasets.
-</p><!-- l. 103 --><p class='noindent'>QGFace’s <span class='bchb8t-x-x-109'>single-encoder architecture </span>is my solution. Its an internal <span class='bchb8t-x-x-109'>information dispatch system</span>. It
-simulates a ~routing~ process: high-quality data follow a classification path, low-quality data follow a
-contrastive path, and gradient truncation prevents contamination across paths. To learn to recognize
-low-quality data, I applied augmentation on images this time. The first thing is to design the
-augmentation pipeline to avoid model collapse during training. Later when contrastive learning
-underperformed due to insufficient positive pairs, I designed a <span class='bchb8t-x-x-109'>Proxy-Updated Real-Time Queue </span>that
-boosted performance on low-quality data. Racing against a deadline, I structured my days into
-intense cycles; GPU time became my rest time. Far from being a burden, I felt little depression at
-that time as I knew that this was something being built. It proved that what drives me is not
-external expectation, but the intrinsic intellectual joy of solving hard problems. Ultimately,
-QGFace reached SOTA on low-quality datasets with <span class='bchb8t-x-x-109'>only a 0.3% trade-off </span>on high-quality
-data, validating that my research philosophy can yield elegant, robust, and practical systems
-<span class='cite'>[<a href='#Xqgface'>2</a>]</span>.
 </p><!-- l. 106 --><p class='noindent'>
 </p>
-<h3 class='sectionHead' id='exploration-clarifying-my-direction-through-working-practice'><span class='titlemark'>IV    </span> <a id='x1-4000IV'></a>Exploration: Clarifying My Direction Through Working Practice</h3>
-<!-- l. 108 --><p class='noindent'>Despite some academic progress, repeated setbacks and uncertainty in the submission process led to a
-period of deep confusion and self-doubt. To find clarity, I decided to step into industry and <span class='bchb8t-x-x-109'>stress-test </span>my
-intrinsic motivation.
-</p><!-- l. 110 --><p class='noindent'>I first joined KeyoneAI, a startup led by former IBM China Chief AI Architect Jie Fang. There, I translated
-frontier generative AI into product, felt the pulse of rapid iteration, advocated technology, and engaged
-with users.
+<h3 class='sectionHead' id='robust-feature-representations-coreface-coreface'><span class='titlemark'>II    </span> <a id='x1-2000II'></a>Robust Feature Representations (CoReFace) <span class='cite'>[<a href='#Xcoreface'>1</a>]</span></h3>
+<!-- l. 108 --><p class='noindent'>My research journey began with a deep fascination for self-supervised contrastive learning. It does not rely
+on expensive human annotations; instead, it learns from the structure inherent in data. Its elegance
+and potential captivated me. However, the realities of <span class='bchb8t-x-x-109'>my lab with very limited computing
+resource and diverse student directions</span> pushed me to give it up and pursue a more inexpensive
+alternative.
+</p><!-- l. 110 --><p class='noindent'>I found face recognition to be an ideal ~sandbox.~ I observed its deep kinship with contrastive learning:
+<span class='bchb8t-x-x-109'>both carefully shape the feature distributions in high-dimensional space</span> and share the same goal.
+Building on this, I proposed the CoReFace framework, which introduces contrastive learning into
+classification to achieve robust feature representations.
                                                                                           
                                                                                           
-</p><!-- l. 112 --><p class='noindent'>Later, I served as the sole technical lead on the organizing committee of the Worldwide Educators
-Conference (WWEC) <span class='cite'>[<a href='#Xwwec'>3</a>]</span>. Beyond ensuring system reliability, I accelerated the team’s digital
-transformation, developed internal tools to generate 1000+ complex posters, and connected 3,000
-attendees, 1,000 exhibitors, 10+ vendors, and many ad-hoc sessions—working 80 hours per week for
-nearly three months. While challenging and rewarding, these experiences still could not replace the pure
-intellectual excitement and flow I feel in research, witnessing breakthroughs in a field and
-contributing to them. This deliberate detour granted me unprecedented clarity: my deepest drive is to
-question fundamentals, refute and rebuild existing solutions, and innovate effectively across
-disciplines.
-</p><!-- l. 114 --><p class='noindent'>More importantly, this exploration helped me reframe what used to be excessive self-scrutiny into a unique
-research lens. I understand deeply that <span class='bchb8t-x-x-109'>a truly intelligent system is not defined by flawless
-unidirectional reasoning but by its capacity to handle internal conflict, self-examination, and
-iterative revision</span>—the essence of human reflection and ~productive struggle.~
-</p><!-- l. 116 --><p class='noindent'>
+</p><!-- l. 112 --><p class='noindent'>In fine-grained recognition tasks such as face recognition, traditional image enhancement methods tend to
+destroy critical identity information. Since addressing the issue at the image level was not feasible, <span class='bchb8t-x-x-109'>I
+shifted my focus to exploring feature-level processing approaches.</span> I employed Dropout, which is
+essentially a random perturbation at the feature level; it can construct feature pairs for contrastive learning
+without undermining the semantic information of images.
+</p><!-- l. 114 --><p class='noindent'>Furthermore, I identified and addressed compatibility issues in the joint training process of classification
+and contrastive learning. These issues included two key aspects: <span class='bchb8t-x-x-109'>the supervision signal in contrastive
+learning being too weak to generate effective optimization, and the problem of semantic duplicate
+calculation in some sample pairs.</span> To tackle these, I conducted in-depth optimization of the contrastive
+learning loss function by introducing a dynamic similarity constraint, which ensured the maintenance of
+effective training gradients throughout the entire training process. For the issue of semantic duplication in
+sample pairs, I opted to restructure the scheme for constructing sample pairs used in contrastive
+learning.
+</p><!-- l. 116 --><p class='noindent'>By introducing a regularization term guided by contrastive learning, I proactively ~arranged~ the geometric
+structure of the feature space. Ultimately, this method successfully <span class='bchb8t-x-x-109'>increased the similarity margin
+between positive and negative pairs by 15%</span>. In this work, I took the lead in overseeing the entire
+lifecycle, spanning from background research and scheme design to independent verification and paper
+writing. This experience enabled me to achieve a cognitive transition in my identity, moving from a
+~student~ to a ~researcher~.
+</p><!-- l. 118 --><p class='noindent'>
+</p>
+<h3 class='sectionHead' id='a-unified-framework-for-heterogeneous-data-qgface-qgface'><span class='titlemark'>III    </span> <a id='x1-3000III'></a>A Unified Framework for Heterogeneous Data (QGFace) <span class='cite'>[<a href='#Xqgface'>2</a>]</span></h3>
+<!-- l. 120 --><p class='noindent'>After completing CoReFace, I was eager to conduct research that would establish a more direct connection
+with the real world. <span class='bchb8t-x-x-109'>This idea was inspired while I was browsing through my phone’s photo album</span>:
+the built-in AI face clustering feature didn’t perform well when processing my family photos, often missing
+pictures of certain individuals. I realized that <span class='bchb8t-x-x-109'>low-quality data</span> in real-world scenarios, resulting from
+factors like shooting distance, composition, and lighting, <span class='bchb8t-x-x-109'>differs significantly from the datasets
+commonly used in general face recognition</span>.
+</p><!-- l. 122 --><p class='noindent'>Hoping to achieve unified processing of data with varying quality <span class='bchb8t-x-x-109'>through an elegant and efficient
+method</span>, I initiated the QGFace project. It was developed based on a single-encoder architecture,
+eliminating redundant components such as super-resolution modules and teacher-student networks used in
+existing solutions. <span class='bchb8t-x-x-109'>Clear images facilitate accurate person identification, while extremely
+blurry or occluded images make it nearly impossible to determine the corresponding
+identity</span>. Based on this assumption, I applied different supervision signals to encoded features of
+varying quality: classification loss for high-quality data and contrastive loss for low-quality
+data.
+</p><!-- l. 125 --><p class='noindent'>During the process, I discovered that contrastive learning underperformed due to insufficient sample pairs,
+prompting me to design a real-time encoding queue. <span class='bchb8t-x-x-109'>Unlike the momentum encoding queue commonly
+used in contrastive learning</span><span class='cite'>[<a href='#Xmoco'>3</a>]</span>, its features do not come from momentum encoders but from the training
+encoder. Meanwhile, these encoding results are updated using the differences between classification
+vectors at different update steps.
+                                                                                          
+                                                                                          
+</p><!-- l. 127 --><p class='noindent'>To meet the submission deadline, I immersed myself fully in the work. During that period, <span class='bchb8t-x-x-109'>my
+day was divided into multiple work sessions, and GPU processing time became my only
+breaks</span>. This experience was not a heavy burden for me, nor did I fall into a state of depression,
+because <span class='bchb8t-x-x-109'>I knew I was creating something valuable</span>: it convinced me that my motivation
+stemmed not from external expectations, but from an intrinsic drive and joy in solving difficult
+problems.
+</p><!-- l. 129 --><p class='noindent'>Ultimately, QGFace achieved SOTA performance on low-quality datasets while barely sacrificing
+performance on high-quality data (with only a minimal 0.3%/95.5% performance trade-off),
+<span class='bchb8t-x-x-109'>demonstrating that my research philosophy can guide the development of practical solutions that
+are both elegant and robust</span>. Additionally, this work represents <span class='bchb8t-x-x-109'>an exploration of ~unimodal~ data
+content</span>. I have always believed that current methods still have room for improvement in exploring the
+modality itself. For instance, models tend to prioritize textures over shapes, unlike human perception which
+relies more on shapes. Exploring internal alignment within unimodal data will be a focus of my future
+work.
+</p><!-- l. 131 --><p class='noindent'>
+</p>
+<h3 class='sectionHead' id='exploration-clarifying-my-direction-through-working-practice-'><span class='titlemark'>IV    </span> <a id='x1-4000IV'></a>Exploration: Clarifying My Direction Through Working Practice </h3>
+<!-- l. 133 --><p class='noindent'>Despite achieving some academic results, repeated setbacks and uncertainties in the submission process
+plunged me into a profound period of confusion. I began to strongly doubt myself: <span class='bchb8t-x-x-109'>Was I truly suited for
+an academic career?</span> In search of answers, I made a decision: to proactively step into industry and conduct
+a thorough ~exploration~ of my true inner passions.
+</p><!-- l. 135 --><p class='noindent'>I first joined KeyoneAI, a startup led by Mr. Fang Jie, former Chief AI Architect of IBM China. There, <span class='bchb8t-x-x-109'>I
+worked on implementing cutting-edge generative AI technologies into products</span>, experiencing the
+impact of rapid iterations, collaborating with teams, engaging with potential users, and acting as a
+technology evangelist. However, I found it rather tormenting to be so close to technology yet caught in the
+trivil work of product refinement, while feeling distanced from intellectual innovation. Thus, I eventually
+left.
+</p><!-- l. 137 --><p class='noindent'>Seeking to understand how technology empowers various industries, I joined an organization
+further from the source of AI, the organizing committee of the Worldwide Educators Conference
+(WWEC)<span class='cite'>[<a href='#Xwwec'>4</a>]</span>. As the sole technical lead, I leveraged technology to enable <span class='bchb8t-x-x-109'>an international
+conference attended by tens of thousands of people</span>. Over nearly three months of working 80
+hours a week, I ensured system functionality while promoting team digitalization, developing
+internal tools to support the generation of <span class='bchb8t-x-x-109'>over 1,000 complex posters, and connecting
+more than 3,000 attendees, 1,00 exhibitors, 10+ vendors</span>, and managing various ad-hoc
+meetings.
+</p><!-- l. 140 --><p class='noindent'>While these experiences brought significant challenges and a sense of accomplishment afterward, I realized
+none could replace the pure, intellectual excitement and flow I felt during research: witnessing how
+researchers make breakthroughs in certain technical directions, sometimes several times a year or after
+years of effort, and being part of such breakthroughs myself. This period of ~deliberate detachment~
+brought unprecedented clarity: <span class='bchb8t-x-x-109'>my deepest desire lies in questioning the underlying principles of
+things, refuting and reconstructing existing solutions</span>, and building innovations that draw on diverse
+sources and are truly effective.
+                                                                                          
+                                                                                          
+</p><!-- l. 142 --><p class='noindent'>More importantly, my work experiences helped transform what once troubled me. That is excessive
+sensitivity, self-examination, and ~internal friction~—into valuable life accumulations. Throughout my
+work, I constantly felt a certain void within; although my contributions were indispensable to
+the team, my inner creative passion remained unexpressed. To balance my mind, I turned to
+outdoor activities and read books on mind-body-spirit wellness. Among all this, thoughts about
+achieving intelligence kept emerging in my mind. I now firmly believe that <span class='bchb8t-x-x-109'>the hallmark of a truly
+intelligent system should not be flawless one-way reasoning, but precisely the ability to handle
+internal conflicts, engage in self-examination, and iteratively correct itself</span>. This is the
+essence of human ~reflection~ and ~hesitation,~ and the foundation of complex reasoning and
+intelligence.
+</p><!-- l. 144 --><p class='noindent'>
 </p>
 <h3 class='sectionHead' id='future-align-semantics-reason-in-latent-space'><span class='titlemark'>V    </span> <a id='x1-5000V'></a>Future: Align Semantics &amp; Reason in Latent Space</h3>
-<!-- l. 118 --><p class='noindent'>I now plan my Ph.D. research with renewed clarity and conviction. I aim to combine my experience in
-<span class='bchb8t-x-x-109'>mechanism design </span>with reflections on <span class='bchb8t-x-x-109'>human cognition</span>, focusing on two capabilities of large
+<!-- l. 146 --><p class='noindent'>Now, I am planning my doctoral research with a clearer and more determined goal. I aim to combine my
+past experience in <span class='bchb8t-x-x-109'>feature space optimization and heterogeneous data processing</span> with my
+reflections on human cognitive processes, focusing on exploring two core capabilities of large
 models:
-</p><!-- l. 120 --><p class='noindent'><span class='bchb8t-x-x-109'>1. Building a Unified Semantic Space: </span>My first goal is to study how to effectively map diverse information
-into a unified, interpretable latent space. This goes beyond cross-modal mapping. It is the lower code of
-how model understand the world laws, like physics. I believe that efficient cross-modal semantic
-alignment is a first step toward foundational models that can comprehensively understand the
-world.
-</p><!-- l. 122 --><p class='noindent'><span class='bchb8t-x-x-109'>2. Realizing Structured Reasoning in Latent Space: </span>The other goal is to design <span class='bchri8t-x-x-109'>structured</span>,
-chain-of-thought-like reasoning trajectories within the latent space. I want models not only to be
-like the early computers that used punched paper tape for data input and output (which is
-transformer doing), but also to present a decomposable and traceable reasoning process in
-itself.
-</p><!-- l. 124 --><p class='noindent'>In summary, my research proceeds on two fronts: through <span class='bchb8t-x-x-109'>sementic alignment</span>, enabling models to
-~see~ a richer world; and through <span class='bchb8t-x-x-109'>latent reasoning</span>, enabling them to ~think~ more clearly and
-logically.
-</p><!-- l. 126 --><p class='noindent'>
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-5002x1'><span class='bchb8t-x-x-109'>Constructing
+     a
+     Unified
+     Semantic
+     Space:</span>
+     My
+     primary
+     objective
+     is
+     to
+     investigate
+     how
+     to
+     effectively
+     map
+     various
+     types
+     of
+     information
+     into
+     a
+     unified
+     latent
+                                                                                          
+                                                                                          
+     space
+     with
+     interpretable
+     semantics.
+     <span class='bchb8t-x-x-109'>This
+     not
+     only
+     emphasizes
+     cross-modal
+     mapping
+     but
+     also
+     involves
+     the
+     exploration
+     of
+     unimodal
+     data
+     content.</span>
+     I
+     believe
+     that
+     the
+     semantic
+     alignment
+     is
+     the
+     first
+     step
+     in
+     building
+     a
+     foundational
+     model
+     capable
+     of
+     comprehensively
+     understanding
+     the
+     world.
+     My
+     experience
+     in
+     handling
+     heterogeneous
+     data
+     during
+     the
+     QGFace
+     project
+                                                                                          
+                                                                                          
+     has
+     provided
+     me
+     with
+     a
+     valuable
+     practical
+     basis
+     for
+     exploring
+     ways
+     to
+     align
+     and
+     fuse
+     heterogeneous
+     information.
+     </li>
+<li class='enumerate' id='x1-5004x2'><span class='bchb8t-x-x-109'>Enabling
+     Structured
+     Reasoning
+     Processes
+     in
+     the
+     Latent
+     Space:</span>
+     In
+     the
+     process
+     of
+     achieving
+     semantic
+     alignment,
+     my
+     another
+     goal
+     is
+     to
+     design
+     and
+     implement
+     the
+     model’s
+     autonomous,
+     structured
+     reasoning
+     paths
+                                                                                          
+                                                                                          
+     within
+     the
+     latent
+     space.
+     <span class='bchb8t-x-x-109'>Existing
+     models
+     are
+     similar
+     to
+     early
+     computers
+     that
+     used
+     paper
+     tapes
+     for
+     input
+     and
+     output</span>,
+     lacking
+     a
+     unified
+     ~brain~
+     and
+     a
+     coherent
+     thinking
+     process.
+     I
+     hope
+     the
+     <span class='bchb8t-x-x-109'>model
+     can
+     not
+     only
+     generate
+     answers
+     but
+     also
+     demonstrate
+     a
+     decomposable
+     and
+     traceable
+     reasoning
+     process.</span>
+     This
+     will
+     not
+     only
+                                                                                          
+                                                                                          
+     enhance
+     the
+     model’s
+     interpretability
+     and
+     reliability
+     but
+     may
+     also
+     offer
+     new
+     approaches
+     to
+     solving
+     more
+     complex,
+     open-ended
+     problems
+     that
+     require
+     multi-step
+     logic.</li></ol>
+<!-- l. 152 --><p class='noindent'>In summary, my research plan progresses in two parallel directions: on one hand, enabling the model to
+<span class='bchb8t-x-x-109'>~perceive~</span> a richer world through multi-modal alignment; on the other hand, allowing the model to
+<span class='bchb8t-x-x-109'>~acheive~</span> more clearly and logically through latent reasoning. Most published works start by exploring
+<span class='bchb8t-x-x-109'>how to extend existing models</span>; by contrast, my research begins with clarifying <span class='bchb8t-x-x-109'>what the model needs to
+achieve</span>.
+</p><!-- l. 154 --><p class='noindent'>
 </p>
 <h3 class='sectionHead' id='conclusion'><span class='titlemark'>VI    </span> <a id='x1-6000VI'></a>Conclusion</h3>
-<!-- l. 128 --><p class='noindent'>With hands-on experience designing internal mechanisms and a clear plan to integrate <span class='bchri8t-x-x-109'>semantic alignment</span>
-with <span class='bchri8t-x-x-109'>latent reasoning</span>, I am prepared for the challenges of a Ph.D. I look forward to contributing to
-                                                                                          
-                                                                                          
+<!-- l. 156 --><p class='noindent'>With hands-on experience designing internal mechanisms and a clear plan to integrate <span class='pplri8t-x-x-109'>semantic alignment</span>
+with <span class='pplri8t-x-x-109'>latent reasoning</span>, I am prepared for the challenges of a Ph.D. I look forward to contributing to
 the next generation of more capable and trustworthy AI systems in a creative and supportive
 environment.
 </p><!-- l. 1 --><p class='noindent'>
 </p>
 <h3 class='likesectionHead' id='references'><a id='x1-7000'></a>References</h3>
 <!-- l. 1 --><p class='noindent'>
+                                                                                          
+                                                                                          
     </p><div class='thebibliography'>
     <p class='bibitem'><span class='biblabel'>
  [1]<span class='bibsp'>   </span></span>
-    <a id='Xcoreface'></a>Youzhe
-    Song
+    <a id='Xcoreface'></a><span class='bchb8t-x-x-109'>Youzhe
+    Song</span>
     and
     Feng
     Wang.
@@ -155,8 +393,8 @@ environment.
     </p>
     <p class='bibitem'><span class='biblabel'>
  [2]<span class='bibsp'>   </span></span>
-    <a id='Xqgface'></a>Youzhe
-    Song
+    <a id='Xqgface'></a><span class='bchb8t-x-x-109'>Youzhe
+    Song</span>
     and
     Feng
     Wang.
@@ -166,8 +404,6 @@ environment.
     for
     mixed-quality
     face
-                                                                                          
-                                                                                          
     recognition.
     In
     <span class='bchri8t-x-x-109'>2024
@@ -181,11 +417,47 @@ environment.
     Gesture
     Recognition
     (FG)</span>.
+                                                                                          
+                                                                                          
     IEEE,
     2024.
     </p>
     <p class='bibitem'><span class='biblabel'>
  [3]<span class='bibsp'>   </span></span>
+    <a id='Xmoco'></a>Kaiming
+    He,
+    Haoqi
+    Fan,
+    Yuxin
+    Wu,
+    Saining
+    Xie,
+    and
+    Ross B.
+    Girshick.
+    Momentum
+    contrast
+    for
+    unsupervised
+    visual
+    representation
+    learning.
+    <span class='bchri8t-x-x-109'>2020
+    IEEE/CVF
+    Conference
+    on
+    Computer
+    Vision
+    and
+    Pattern
+    Recognition
+    (CVPR)</span>,
+    pages
+    9726–9735,
+    2019.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [4]<span class='bibsp'>   </span></span>
     <a id='Xwwec'></a>Worldwide
     educators
     conference
@@ -193,6 +465,8 @@ environment.
     
 <a class='url' href='https://www.wwec820.com/'><span class='ectt-1095'>https://www.wwec820.com/</span></a>.
 </p>
+                                                                                          
+                                                                                          
     </div>
  
 </body> 

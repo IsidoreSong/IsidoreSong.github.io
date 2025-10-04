@@ -1,4 +1,4 @@
-% !TEX program = pdflatex
+% !TEX program = xelatex
 \documentclass[11pt, letterpaper]{article}
 
 % 1. PACKAGES
@@ -14,6 +14,14 @@
 % Font settings to match the example (Charter is a common, clean academic font)
 \usepackage{charter}
 \usepackage[T1]{fontenc}
+\usepackage{mathpazo} % Use Palatino for a more readable "fancy" font
+\renewcommand{\rmdefault}{bch} % Force the main font back to Charter (bch)
+
+% Redefine \emph and \textit to use italic Palatino
+\let\oldemph\emph
+\renewcommand{\emph}[1]{{\fontfamily{ppl}\itshape #1}}
+\let\oldtextit\textit
+\renewcommand{\textit}[1]{{\fontfamily{ppl}\itshape #1}}
 
 % For customizing section titles
 \usepackage{titlesec} 
@@ -22,6 +30,7 @@
 \usepackage{fancyhdr} 
 
 % For better hyperlinks (optional but good practice)
+\usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fontawesome5}
 \hypersetup{
@@ -64,6 +73,10 @@
 
 
 % 3. DOCUMENT STARTS HERE
+\let\oldtextbf\textbf
+\renewcommand{\textbf}[1]{{\color{black}\oldtextbf{#1}}}
+\color{black!85}
+
 \begin{document}
 
 % --- Custom Header (matching the sop.pdf example) ---
@@ -86,42 +99,57 @@
 % --- Your Content (Unchanged) ---
 \section{Introduction: My Research Interests and Perspective}
 
-Current AI models have achieved remarkable success across tasks, yet their internal mechanisms remain largely a "black box." We know what models can do, and to some extent how they do it in specific details, but we lack an intuitively human-understandable view of their cognitive and reasoning processes. I believe that a key step toward more general and reliable AI lies in understanding and designing the model's internal information-processing mechanisms. My research interests center on two core questions: First, can we construct within the model a \textbf{human-intuitive, stepwise, and organic reasoning trajectory}? Second, how can we enable the model to \textbf{understand and align information from different sources} (e.g., images and text) in a human-like manner?
+Current AI models have achieved remarkable success across tasks, yet their internal mechanisms remain largely a "black box." We know what models can do, and to some extent how they do it in specific details, but we lack an intuitively human-understandable view of their cognitive and reasoning processes. I believe that a key step toward more general and reliable AI lies in understanding and designing the model's internal information-processing mechanisms. My research interests center on two core questions: First, how can we enable the model to \textbf{understand and align information from different modals} (e.g., images and text) in a human-like manner? Second, can we construct within the model a \textbf{human-intuitive, stepwise, and organic reasoning trajectory}?
 
 My goal is to explore how to realize the fusion of these two abilities in a high-dimensional latent space, enabling models not only to "see" and "read" the world, but also to reason about it in a transparent and trustworthy way.
 
-\section{Robust Feature Representations (CoReFace)}
+\section{Robust Feature Representations (CoReFace) \cite{coreface}}
 
-My research journey began with a deep fascination for self-supervised contrastive learning. It does not rely on expensive human annotations; instead, it learns from the structure inherent in data. Its elegance and potential captivated me. However, the realities of a lab with very limited compute and diverse student directions pushed me to give it up and pursue a more fundamental alternative.
+My research journey began with a deep fascination for self-supervised contrastive learning. It does not rely on expensive human annotations; instead, it learns from the structure inherent in data. Its elegance and potential captivated me. However, the realities of \textbf{my lab with very limited computing resource and diverse student directions} pushed me to give it up and pursue a more inexpensive alternative.
 
-I found face recognition to be an ideal "sandbox." I observed its deep kinship with contrastive learning: both carefully shape the geometry of feature distributions in high-dimensional space and share the same goal the to be generalized in open-set. Building on this, I proposed the CoReFace framework, which is an instance of explicit design of internal mechanisms. In this fine-grained recognition task, traditional image augmentations can damage identity information. A key insight I had was that Dropout is essentially a \textbf{feature-level stochastic perturbation} that can provide the necessary views for contrastive learning without corrupting image semantics. After introducing contrastive learning, I further enhanced the weak supervising signal to make it work and rearange the pair construction in contrastive learning to avoid semantical repeat signal problem in the unified training. All of these made the framework actively \textbf{regularized} the geometric structure of the feature space. Ultimately, this approach \textbf{increased the similarity margin between positive and negative pairs by 15\%}. Throughout, I led the full lifecycle—from problem identification and design to independent validation and writing—shifting from "student" to a truly \textbf{independent researcher} \cite{coreface}.
+I found face recognition to be an ideal "sandbox." I observed its deep kinship with contrastive learning: \textbf{both carefully shape the feature distributions in high-dimensional space} and share the same goal. Building on this, I proposed the CoReFace framework, which introduces contrastive learning into classification to achieve robust feature representations.
 
-\section{A Unified Framework for Heterogeneous Data (QGFace)}
+In fine-grained recognition tasks such as face recognition, traditional image enhancement methods tend to destroy critical identity information. Since addressing the issue at the image level was not feasible, \textbf{I shifted my focus to exploring feature-level processing approaches.} I employed Dropout, which is essentially a random perturbation at the feature level; it can construct feature pairs for contrastive learning without undermining the semantic information of images.
 
-After CoReFace, I yearned for research with more immediate real-world relevance. This was reinforced when I scrolled through my phone's photo album: the built-in face clustering struggled with family photos. I realized that low-quality data arising from composition, lighting, and other real-world factors differ markedly from our common datasets.
+Furthermore, I identified and addressed compatibility issues in the joint training process of classification and contrastive learning. These issues included two key aspects: \textbf{the supervision signal in contrastive learning being too weak to generate effective optimization, and the problem of semantic duplicate calculation in some sample pairs.} To tackle these, I conducted in-depth optimization of the contrastive learning loss function by introducing a dynamic similarity constraint, which ensured the maintenance of effective training gradients throughout the entire training process. For the issue of semantic duplication in sample pairs, I opted to restructure the scheme for constructing sample pairs used in contrastive learning.
 
-QGFace's \textbf{single-encoder architecture} is my solution. Its an internal \textbf{information dispatch system}. It simulates a "routing" process: high-quality data follow a classification path, low-quality data follow a contrastive path, and gradient truncation prevents contamination across paths. To learn to recognize low-quality data, I applied augmentation on images this time. The first thing is to design the augmentation pipeline to avoid model collapse during training.
-Later when contrastive learning underperformed due to insufficient positive pairs, I designed a \textbf{Proxy-Updated Real-Time Queue} that boosted performance on low-quality data. Racing against a deadline, I structured my days into intense cycles; GPU time became my rest time. Far from being a burden, I felt little depression at that time as I knew that this was something being built. It proved that what drives me is not external expectation, but the intrinsic intellectual joy of solving hard problems. Ultimately, QGFace reached SOTA on low-quality datasets with \textbf{only a 0.3\% trade-off} on high-quality data, validating that my research philosophy can yield elegant, robust, and practical systems \cite{qgface}.
+By introducing a regularization term guided by contrastive learning, I proactively "arranged" the geometric structure of the feature space. Ultimately, this method successfully \textbf{increased the similarity margin between positive and negative pairs by 15\%}. In this work, I took the lead in overseeing the entire lifecycle, spanning from background research and scheme design to independent verification and paper writing. This experience enabled me to achieve a cognitive transition in my identity, moving from a "student" to a "researcher".
 
-\section{Exploration: Clarifying My Direction Through Working Practice}
+\section{A Unified Framework for Heterogeneous Data (QGFace) \cite{qgface}}
 
-Despite some academic progress, repeated setbacks and uncertainty in the submission process led to a period of deep confusion and self-doubt. To find clarity, I decided to step into industry and \textbf{stress-test} my intrinsic motivation.
+After completing CoReFace, I was eager to conduct research that would establish a more direct connection with the real world. \textbf{This idea was inspired while I was browsing through my phone's photo album}: the built-in AI face clustering feature didn't perform well when processing my family photos, often missing pictures of certain individuals. I realized that \textbf{low-quality data} in real-world scenarios, resulting from factors like shooting distance, composition, and lighting, \textbf{differs significantly from the datasets commonly used in general face recognition}.
 
-I first joined KeyoneAI, a startup led by former IBM China Chief AI Architect Jie Fang. There, I translated frontier generative AI into product, felt the pulse of rapid iteration, advocated technology, and engaged with users.
+Hoping to achieve unified processing of data with varying quality \textbf{through an elegant and efficient method}, I initiated the QGFace project.
+It was developed based on a single-encoder architecture, eliminating redundant components such as super-resolution modules and teacher-student networks used in existing solutions. \textbf{Clear images facilitate accurate person identification, while extremely blurry or occluded images make it nearly impossible to determine the corresponding identity}. Based on this assumption, I applied different supervision signals to encoded features of varying quality: classification loss for high-quality data and contrastive loss for low-quality data.
 
-Later, I served as the sole technical lead on the organizing committee of the Worldwide Educators Conference (WWEC) \cite{wwec}. Beyond ensuring system reliability, I accelerated the team's digital transformation, developed internal tools to generate 1000+ complex posters, and connected 3,000 attendees, 1,000 exhibitors, 10+ vendors, and many ad-hoc sessions—working 80 hours per week for nearly three months. While challenging and rewarding, these experiences still could not replace the pure intellectual excitement and flow I feel in research, witnessing breakthroughs in a field and contributing to them. This deliberate detour granted me unprecedented clarity: my deepest drive is to question fundamentals, refute and rebuild existing solutions, and innovate effectively across disciplines.
+During the process, I discovered that contrastive learning underperformed due to insufficient sample pairs, prompting me to design a real-time encoding queue. \textbf{Unlike the momentum encoding queue commonly used in contrastive learning}\cite{moco}, its features do not come from momentum encoders but from the training encoder. Meanwhile, these encoding results are updated using the differences between classification vectors at different update steps.
 
-More importantly, this exploration helped me reframe what used to be excessive self-scrutiny into a unique research lens. I understand deeply that \textbf{a truly intelligent system is not defined by flawless unidirectional reasoning but by its capacity to handle internal conflict, self-examination, and iterative revision}—the essence of human reflection and "productive struggle."
+To meet the submission deadline, I immersed myself fully in the work. During that period, \textbf{my day was divided into multiple work sessions, and GPU processing time became my only breaks}. This experience was not a heavy burden for me, nor did I fall into a state of depression, because \textbf{I knew I was creating something valuable}: it convinced me that my motivation stemmed not from external expectations, but from an intrinsic drive and joy in solving difficult problems.
+
+Ultimately, QGFace achieved SOTA performance on low-quality datasets while barely sacrificing performance on high-quality data (with only a minimal 0.3\%/95.5\% performance trade-off), \textbf{demonstrating that my research philosophy can guide the development of practical solutions that are both elegant and robust}. Additionally, this work represents \textbf{an exploration of "unimodal" data content}. I have always believed that current methods still have room for improvement in exploring the modality itself. For instance, models tend to prioritize textures over shapes, unlike human perception which relies more on shapes. Exploring internal alignment within unimodal data will be a focus of my future work.
+
+\section{Exploration: Clarifying My Direction Through Working Practice }
+
+Despite achieving some academic results, repeated setbacks and uncertainties in the submission process plunged me into a profound period of confusion. I began to strongly doubt myself: \textbf{Was I truly suited for an academic career?} In search of answers, I made a decision: to proactively step into industry and conduct a thorough "exploration" of my true inner passions.
+
+I first joined KeyoneAI, a startup led by Mr. Fang Jie, former Chief AI Architect of IBM China. There, \textbf{I worked on implementing cutting-edge generative AI technologies into products}, experiencing the impact of rapid iterations, collaborating with teams, engaging with potential users, and acting as a technology evangelist. However, I found it rather tormenting to be so close to technology yet caught in the trivil work of product refinement, while feeling distanced from intellectual innovation. Thus, I eventually left.
+
+Seeking to understand how technology empowers various industries, I joined an organization further from the source of AI, the organizing committee of the Worldwide Educators Conference (WWEC)\cite{wwec}.
+As the sole technical lead, I leveraged technology to enable \textbf{an international conference attended by tens of thousands of people}. Over nearly three months of working 80 hours a week, I ensured system functionality while promoting team digitalization, developing internal tools to support the generation of \textbf{over 1,000 complex posters, and connecting more than 3,000 attendees, 1,00 exhibitors, 10+ vendors}, and managing various ad-hoc meetings.
+
+While these experiences brought significant challenges and a sense of accomplishment afterward, I realized none could replace the pure, intellectual excitement and flow I felt during research: witnessing how researchers make breakthroughs in certain technical directions, sometimes several times a year or after years of effort, and being part of such breakthroughs myself. This period of "deliberate detachment" brought unprecedented clarity: \textbf{my deepest desire lies in questioning the underlying principles of things, refuting and reconstructing existing solutions}, and building innovations that draw on diverse sources and are truly effective.
+
+More importantly, my work experiences helped transform what once troubled me. That is excessive sensitivity, self-examination, and "internal friction"—into valuable life accumulations. Throughout my work, I constantly felt a certain void within; although my contributions were indispensable to the team, my inner creative passion remained unexpressed. To balance my mind, I turned to outdoor activities and read books on mind-body-spirit wellness. Among all this, thoughts about achieving intelligence kept emerging in my mind. I now firmly believe that \textbf{the hallmark of a truly intelligent system should not be flawless one-way reasoning, but precisely the ability to handle internal conflicts, engage in self-examination, and iteratively correct itself}. This is the essence of human "reflection" and "hesitation," and the foundation of complex reasoning and intelligence.
 
 \section{Future: Align Semantics \& Reason in Latent Space}
 
-I now plan my Ph.D. research with renewed clarity and conviction. I aim to combine my experience in \textbf{mechanism design} with reflections on \textbf{human cognition}, focusing on two capabilities of large models:
+Now, I am planning my doctoral research with a clearer and more determined goal. I aim to combine my past experience in \textbf{feature space optimization and heterogeneous data processing} with my reflections on human cognitive processes, focusing on exploring two core capabilities of large models:
+\begin{enumerate}
+    \item \textbf{Constructing a Unified Semantic Space:} My primary objective is to investigate how to effectively map various types of information into a unified latent space with interpretable semantics. \textbf{This not only emphasizes cross-modal mapping but also involves the exploration of unimodal data content.} I believe that the semantic alignment is the first step in building a foundational model capable of comprehensively understanding the world. My experience in handling heterogeneous data during the QGFace project has provided me with a valuable practical basis for exploring ways to align and fuse heterogeneous information.
+    \item \textbf{Enabling Structured Reasoning Processes in the Latent Space:} In the process of achieving semantic alignment, my another goal is to design and implement the model's autonomous, structured reasoning paths within the latent space. \textbf{Existing models are similar to early computers that used paper tapes for input and output}, lacking a unified "brain" and a coherent thinking process. I hope the \textbf{model can not only generate answers but also demonstrate a decomposable and traceable reasoning process.}  This will not only enhance the model's interpretability and reliability but may also offer new approaches to solving more complex, open-ended problems that require multi-step logic.
+\end{enumerate}
 
-\textbf{1. Building a Unified Semantic Space:} My first goal is to study how to effectively map diverse information into a unified, interpretable latent space. This goes beyond cross-modal mapping. It is the lower code of how model understand the world laws, like physics. I believe that efficient cross-modal semantic alignment is a first step toward foundational models that can comprehensively understand the world.
-
-\textbf{2. Realizing Structured Reasoning in Latent Space:} The other goal is to design \emph{structured}, chain-of-thought-like reasoning trajectories within the latent space. I want models not only to be like the early computers that used punched paper tape for data input and output (which is transformer doing), but also to present a decomposable and traceable reasoning process in itself.
-
-In summary, my research proceeds on two fronts: through \textbf{sementic alignment}, enabling models to "see" a richer world; and through \textbf{latent reasoning}, enabling them to "think" more clearly and logically.
+In summary, my research plan progresses in two parallel directions: on one hand, enabling the model to \textbf{"perceive"} a richer world through multi-modal alignment; on the other hand, allowing the model to \textbf{"acheive"} more clearly and logically through latent reasoning. Most published works start by exploring \textbf{how to extend existing models}; by contrast, my research begins with clarifying \textbf{what the model needs to achieve}.
 
 \section{Conclusion}
 
