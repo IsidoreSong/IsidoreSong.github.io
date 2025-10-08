@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youzhe Song 的研究演进</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.1em;
+            color: #555;
+        }
+        .stage {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            padding: 30px;
+            border-left: 5px solid #3498db;
+        }
+        .stage h2 {
+            font-size: 1.8em;
+            color: #3498db;
+            margin-top: 0;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .bridge h2 {
+            border-left-color: #e67e22;
+            color: #e67e22;
+        }
+        .future h2 {
+            border-left-color: #2ecc71;
+            color: #2ecc71;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+        th {
+            background-color: #ecf0f1;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        td ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        code {
+            background-color: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9em;
+        }
+        .arrow {
+            text-align: center;
+            font-size: 3em;
+            color: #bdc3c7;
+            margin: -10px 0;
+        }
+        .insight-box {
+            background-color: #fff9e6;
+            border-left: 5px solid #f1c40f;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .insight-box h3 {
+            margin-top: 0;
+            color: #c0392b;
+        }
+        .insight-box p {
+            font-size: 1.1em;
+            font-style: italic;
+        }
+        .connection {
+            background-color: #e6f7ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Youzhe Song 的研究演进图谱</h1>
+        <p>从高维特征分布优化的奠基，迈向多模态感知与潜空间推理的未来。</p>
+    </header>
+
+    <!-- 第一阶段：过去 -->
+    <div class="stage past">
+        <h2>过去 (Past Research) — 高维特征分布优化的奠基</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>核心主题</th>
+                    <th>项目/工作</th>
+                    <th>关键问题与方法</th>
+                    <th>核心产出与认知</th>
+                    <th>关键论文参考</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>理论启发</td>
+                    <td><strong>自监督对比学习</strong></td>
+                    <td>如何在无标签数据中学习判别性特征？通过数据增强构造正负样本对，在特征空间中拉近正推远负。</td>
+                    <td>深刻理解“通过塑造特征分布来学习表示”的核心思想，成为后续工作的底层逻辑。</td>
+                    <td><ul><li><code>SimSiam</code></li><li><code>MoCo</code></li><li><code>SupCon</code></li></ul></td>
+                </tr>
+                <tr>
+                    <td>实践探索</td>
+                    <td><strong>CoReFace (PR, 2024)</strong></td>
+                    <td>如何在有监督任务中进一步提升特征鲁棒性？将对比学习作为正则项引入，利用Dropout在特征层构造正样本对。</td>
+                    <td>完成从0到1的研究闭环，实现从“学生”到“研究者”的身份转变。证明了分类与度量学习融合的有效性。</td>
+                    <td><ul><li><code>Arcface</code></li><li><code>SimCLR</code></li></ul></td>
+                </tr>
+                <tr>
+                    <td>问题拓展</td>
+                    <td><strong>QGFace (FG, 2024)</strong></td>
+                    <td>如何设计统一框架来处理真实世界的异构质量数据？根据图像质量动态调度不同的监督信号（分类 vs 对比）。</td>
+                    <td>从生活观察中发现研究问题。证明了“单一模型，多重监督”范式的潜力，并开始思考单模态内部对齐。</td>
+                    <td><ul><li><code>AdaFace</code></li></ul></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="arrow">⬇️</div>
+
+    <!-- 第二阶段：认知之桥 -->
+    <div class="stage bridge">
+        <h2>认知之桥 (The Bridge) — 关于智能本质的思考</h2>
+        <div class="insight-box">
+            <p>
+                从自身的“内在矛盾”和“自我审视”中获得灵感，我意识到：<strong>真正的智能系统，其标志不应是完美的单向推理，而是处理内部冲突、进行自我审视和迭代修正的能力。</strong>这正是人类“反思”和“犹豫”的本质，也是通往更高级智能的基石。
+            </p>
+        </div>
+    </div>
+
+    <div class="arrow">⬇️</div>
+
+    <!-- 第三阶段：未来 -->
+<!-- 第三阶段：未来 (重构版) -->
+<div class="stage future">
+    <h2>未来 (Future Research) — 融合多模态感知与潜空间推理</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>未来方向</th>
+                <th>核心目标</th>
+                <th>与过去的联系</th>
+                <th>研究路径与方法</th>
+                <th>关键论文参考</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1. 多模态对齐</strong> (Multimodal Alignment)</td>
+                <td><strong>构建支撑推理的多模态概念空间：</strong>超越表层特征匹配，构建一个统一的潜空间，其中的多模态表示不仅对齐，更具备支持复杂逻辑推理的结构和组合性。</td>
+                <td><span class="connection">QGFace项目中处理异构单模态数据的经验，为处理跨模态的、更深层次的概念异构性提供了方法论基础。</span></td>
+                <td><ul>
+                    <li><strong>深层概念对齐：</strong>研究如何对齐跨模态的抽象概念、属性与关系（例如，图像中的“动态”与文本中的“奔跑”），形成结构化的世界知识表示。</li>
+                    <li><strong>构建可组合的潜空间：</strong>设计对齐策略，使潜空间中的表示具备组合性，现实概念应当是多个模态的组合信息。</li>
+                </ul></td>
+                <td><ul>
+                    <li><strong>基础:</strong> <code>CLIP</code>, <code>Flamingo</code></li>
+                    <li><strong>结构化概念:</strong> <code>PaLM-E</code><code>图表示学习</code><code>VinVL</code></code></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td><strong>2. 潜空间推理</strong> (Latent Reasoning)</td>
+                <td><strong>重构潜空间推理结构，赋予模型内部思考能力：</strong>核心目标是设计并实现全新的模型内部计算流，使其能进行自主、迭代、可修正的“思考”，而不是简单地将外部推理过程压缩进模型。</td>
+                <td><span class="connection">“认知之桥”的顿悟——AI需要“自我审视和迭代修正”的能力，直接催生了重构模型内部推理结构、赋予其真正思考能力的研究动机。</span></td>
+                <td><ul>
+                    <li><strong>从显式推理到隐式思考：</strong>探索如何将外部的、符号化的推理链（如CoT）转化为模型内部的、连续的、动态的计算流，使其成为模型内生的能力。</li>
+                    <li><strong>设计内生的推理架构：</strong>构建具备循环和动态计算能力的模型（如垂直/水平循环），使其能根据问题复杂性进行“深思熟虑”，而非固定的前向传播。</li>
+                </ul></td>
+                <td><ul>
+                    <li><strong>起点:</strong> <code>wei2022cot</code></li>
+                    <li><strong>架构设计:</strong> <code>Universal Transformer</code>, <code>Mamba</code>, <code>Recurrent-Depth</code></li>
+                    <li><strong>可解释性指导架构:</strong>
+                        <code>Circuit 2022</code>
+                        <code>Memory3</code>
+                    </li>
+                </ul></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+</body>
+</html>

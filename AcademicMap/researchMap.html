@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youzhe Song's Research Evolution</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.1em;
+            color: #555;
+        }
+        .stage {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            padding: 30px;
+            border-left: 5px solid #3498db;
+        }
+        .stage h2 {
+            font-size: 1.8em;
+            color: #3498db;
+            margin-top: 0;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .bridge h2 {
+            border-left-color: #e67e22;
+            color: #e67e22;
+        }
+        .future h2 {
+            border-left-color: #2ecc71;
+            color: #2ecc71;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+        th {
+            background-color: #ecf0f1;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        td ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        code {
+            background-color: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9em;
+        }
+        .arrow {
+            text-align: center;
+            font-size: 3em;
+            color: #bdc3c7;
+            margin: -10px 0;
+        }
+        .insight-box {
+            background-color: #fff9e6;
+            border-left: 5px solid #f1c40f;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .insight-box h3 {
+            margin-top: 0;
+            color: #c0392b;
+        }
+        .insight-box p {
+            font-size: 1.1em;
+            font-style: italic;
+        }
+        .connection {
+            background-color: #e6f7ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Youzhe Song's Research Evolution Map</h1>
+        <p>From the foundations of high-dimensional feature distribution optimization, towards a future of multimodal perception and latent space reasoning.</p>
+    </header>
+
+    <!-- Stage 1: Past -->
+    <div class="stage past">
+        <h2>Past Research — Laying the Foundation in High-Dimensional Feature Distribution Optimization</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Core Theme</th>
+                    <th>Project/Work</th>
+                    <th>Key Questions & Methods</th>
+                    <th>Key Outcomes & Insights</th>
+                    <th>Key Paper References</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Theoretical Inspiration</td>
+                    <td><strong>Self-Supervised Contrastive Learning</strong></td>
+                    <td>How to learn discriminative features from unlabeled data? By constructing positive/negative pairs through data augmentation, pulling positive pairs closer and pushing negative pairs apart in the feature space.</td>
+                    <td>Gained a deep understanding of the core idea of "learning representations by shaping the feature distribution," which became the foundational logic for subsequent work.</td>
+                    <td><ul><li><code>SimSiam</code></li><li><code>MoCo</code></li><li><code>SupCon</code></li></ul></td>
+                </tr>
+                <tr>
+                    <td>In-depth Practice</td>
+                    <td><strong>CoReFace (PR, 2024)</strong></td>
+                    <td>How to further enhance feature robustness in supervised tasks? By introducing contrastive learning as a regularizer and using Dropout at the feature level to construct positive pairs.</td>
+                    <td>Completed a full research cycle from 0 to 1, marking the transition from a "student" to a "researcher". Demonstrated the effectiveness of integrating classification and metric learning.</td>
+                    <td><ul><li><code>Arcface</code></li><li><code>SimCLR</code></li></ul></td>
+                </tr>
+                <tr>
+                    <td>Problem Extension</td>
+                    <td><strong>QGFace (FG, 2024)</strong></td>
+                    <td>How to design a unified framework to handle real-world heterogeneous quality data? By dynamically scheduling different supervision signals (classification vs. contrastive) based on image quality.</td>
+                    <td>Learned to identify research problems from real-life observations. Proved the potential of the "single model, multiple supervisions" paradigm and began to think about intra-modal alignment.</td>
+                    <td><ul><li><code>AdaFace</code></li></ul></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="arrow">⬇️</div>
+
+    <!-- Stage 2: The Cognitive Bridge -->
+    <div class="stage bridge">
+        <h2>The Cognitive Bridge — Pondering the Essence of Intelligence</h2>
+        <div class="insight-box">
+            <h3>Core Insight: Redefining "Intelligence"</h3>
+            <p>
+                Inspired by my own "internal contradictions" and "self-reflection," I realized: <strong>The hallmark of a truly intelligent system should not be flawless, unidirectional reasoning, but the ability to handle internal conflicts, engage in self-examination, and perform iterative correction.</strong> This is the essence of human "reflection" and "hesitation," and it is the cornerstone for achieving higher-level intelligence.
+            </p>
+        </div>
+    </div>
+
+    <div class="arrow">⬇️</div>
+
+    <!-- Stage 3: Future -->
+    <div class="stage future">
+        <h2>Future Research — Integrating Multimodal Perception and Latent Space Reasoning</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Future Direction</th>
+                    <th>Core Objective</th>
+                    <th>Connection to Past Work</th>
+                    <th>Research Path & Methods</th>
+                    <th>Key Paper References</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Multimodal Alignment</strong></td>
+                    <td><strong>Construct a multimodal conceptual space that supports reasoning:</strong> Move beyond surface-level feature matching to build a unified latent space where multimodal representations are not only aligned but also possess the structure and compositionality required for complex logical reasoning.</td>
+                    <td><span class="connection">The experience of handling heterogeneous unimodal data in the QGFace project provides a methodological foundation for addressing the deeper conceptual heterogeneity across different modalities.</span></td>
+                    <td><ul>
+                        <li><strong>Deep Conceptual Alignment:</strong> Investigate how to align abstract concepts, attributes, and relationships across modalities (e.g., "dynamic motion" in an image with "running" in text) to form a structured representation of world knowledge.</li>
+                        <li><strong>Building a Composable Latent Space:</strong> Design alignment strategies that enable compositionality in the latent representations, where real-world concepts emerge from a combination of information across multiple modalities.</li>
+                    </ul></td>
+                    <td><ul>
+                        <li><strong>Foundation:</strong> <code>CLIP</code>, <code>Flamingo</code></li>
+                        <li><strong>Structured Concepts:</strong> <code>PaLM-E</code>, <code>Graph Representation Learning</code>, <code>VinVL</code></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td><strong>2. Latent Space Reasoning</strong></td>
+                    <td><strong>Reconstruct latent reasoning structures to endow models with internal thought capabilities:</strong> The core goal is to design and implement a new internal computational flow that enables models to perform autonomous, iterative, and correctable "thinking," rather than simply compressing external reasoning processes into the model.</td>
+                    <td><span class="connection">The epiphany from the 'Cognitive Bridge'—that AI needs the ability for 'self-examination and iterative correction'—directly motivates this research direction to redesign the model's internal reasoning structure and grant it genuine thinking capabilities.</span></td>
+                    <td><ul>
+                        <li><strong>From Explicit Reasoning to Implicit Thinking:</strong> Explore how to transform external, symbolic reasoning chains (like CoT) into an internal, continuous, and dynamic computational flow, making it an intrinsic capability of the model.</li>
+                        <li><strong>Design Endogenous Reasoning Architectures:</strong> Build models with recurrent and dynamic computational capabilities (e.g., vertical/horizontal recurrence) that can engage in "deliberation" based on problem complexity, moving beyond a fixed feed-forward pass.</li>
+                    </ul></td>
+                    <td><ul>
+                        <li><strong>Starting Point:</strong> <code>wei2022cot</code></li>
+                        <li><strong>Architecture Design:</strong> <code>Universal Transformer</code>, <code>Mamba</code>, <code>Recurrent-Depth</code></li>
+                        <li><strong>Interpretability-Guided Architecture:</strong> <code>Circuit 2022</code>, <code>Memory3</code></li>
+                    </ul></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
