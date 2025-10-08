@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人脸识别论文演进网络图 (专业版)</title>
+    
+    <!-- KaTeX for LaTeX formula rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --bg-color: #f9f9f9;
+            --panel-bg-color: #ffffff;
+            --border-color: #e0e0e0;
+            --text-color: #333;
+            --text-secondary-color: #666;
+            --primary-color: #007bff;
+            --highlight-color: #ffeb3b;
+            --predecessor-color: #f44336;
+            --successor-color: #4caf50;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+        .main-container { display: flex; height: 100vh; width: 100vw; }
+        .left-panel { flex-grow: 1; display: flex; flex-direction: column; padding: 15px; box-sizing: border-box; }
+        header { text-align: center; flex-shrink: 0; }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 15px; padding: 10px 0; flex-wrap: wrap; flex-shrink: 0; }
+        .filter-btn { padding: 8px 16px; border: 1px solid var(--border-color); border-radius: 20px; background-color: var(--panel-bg-color); cursor: pointer; transition: all 0.2s ease; }
+        .filter-btn.active, .filter-btn:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .slider-container { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        #graph-container { flex-grow: 1; border: 1px solid var(--border-color); background-color: var(--panel-bg-color); box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-radius: 8px; position: relative; }
+        .right-panel { width: 420px; flex-shrink: 0; background-color: var(--panel-bg-color); border-left: 1px solid var(--border-color); padding: 25px; box-sizing: border-box; overflow-y: auto; box-shadow: -4px 0 15px rgba(0,0,0,0.05); }
+        .details-placeholder { text-align: center; color: var(--text-secondary-color); margin-top: 40%; }
+        #details-content h2 { margin-top: 0; color: var(--primary-color); line-height: 1.3; }
+        #details-content h4 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 20px; }
+        #formula-display { margin-top: 10px; font-size: 1.1em; }
+        
+        #formula-display .katex-html {
+            display: none !important;
+        }
+        
+        #formula-display .katex-mathml {
+            display: block !important;
+        }
+        
+        svg { width: 100%; height: 100%; }
+        .year-band { fill: #f8f9fa; }
+        .year-band:nth-child(odd) { fill: #eff2f5; }
+        .year-label { fill: #adb5bd; font-size: 14px; font-weight: 500; text-anchor: end; }
+        .node circle { stroke: #fff; stroke-width: 2.5px; cursor: pointer; transition: all 0.2s ease-out; }
+        .node:hover circle { transform: scale(1.2); filter: drop-shadow(0px 0px 5px rgba(0,0,0,0.3)); }
+        .node.selected circle { stroke: var(--primary-color); stroke-width: 4px; }
+        .node text { font-size: 10px; pointer-events: none; fill: #444; text-anchor: middle; }
+        .link { stroke: #aaa; stroke-opacity: 0.8; fill: none; transition: all 0.2s ease-out; }
+        .arrow-head { fill: #888; transition: fill 0.2s ease-out; }
+
+        .node.highlighted circle { stroke: var(--highlight-color); stroke-width: 3px; }
+        .node.predecessor circle { stroke: var(--predecessor-color); stroke-width: 3px; }
+        .node.successor circle { stroke: var(--successor-color); stroke-width: 3px; }
+        .link.highlighted, .link.predecessor, .link.successor { stroke-opacity: 1; stroke-width: 2.5px; }
+        .link.predecessor { stroke: var(--predecessor-color); }
+        .link.predecessor .arrow-head { fill: var(--predecessor-color); }
+        .link.successor { stroke: var(--successor-color); }
+        .link.successor .arrow-head { fill: var(--successor-color); }
+        .faded { opacity: 0.4; }
+        .link.faded { opacity: 1; stroke-opacity: 0.6; }
+        #tooltip { position: absolute; background-color: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 5px; font-size: 12px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 10; }
+        .loading-message { text-align: center; color: var(--text-secondary-color); margin-top: 40%; }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="left-panel">
+            <header>
+                <h1>人脸识别论文演进网络图</h1>
+            </header>
+            <div class="controls">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="分类">分类</button>
+                <button class="filter-btn" data-filter="度量">度量</button>
+                <button class="filter-btn" data-filter="自监督">自监督</button>
+                <button class="filter-btn" data-filter="分析">分析</button>
+                <div class="slider-container">
+                    <label for="radius-slider">节点大小:</label>
+                    <input type="range" id="radius-slider" min="5" max="25" value="12">
+                </div>
+            </div>
+            <div id="graph-container">
+                <div id="tooltip"></div>
+                <div class="loading-message" id="loading">正在加载数据...</div>
+            </div>
+        </div>
+        <div class="right-panel" id="details-panel">
+            <div id="details-content">
+                <div class="details-placeholder">
+                    <h3>欢迎使用</h3>
+                    <p>点击左侧图中的节点<br>在此处查看详细信息</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script>
+    // 测试数据（备用）
+    const testPapersData = [
+        // 2020年
+        {id: "p1", title: "DeepFace: Closing the Gap to Human-Level Performance", authors: "Taigman et al.", year: 2020, method: "DeepFace", category: "分类", 
+         core_idea: "使用深度卷积神经网络实现人脸识别", formula: "L = -\\sum_{i} y_i \\log(\\hat{y}_i)", contribution: "首次达到接近人类水平的识别精度", influences: []},
+        {id: "p2", title: "FaceNet: A Unified Embedding", authors: "Schroff et al.", year: 2020, method: "FaceNet", category: "度量", 
+         core_idea: "通过三元组损失学习人脸嵌入", formula: "L = \\max(0, ||f(a)-f(p)||^2 - ||f(a)-f(n)||^2 + \\alpha)", contribution: "提出了端到端的人脸嵌入学习方法", influences: ["p1"]},
+        {id: "p3", title: "VGGFace: Deep Face Recognition", authors: "Parkhi et al.", year: 2020, method: "VGGFace", category: "分类", 
+         core_idea: "使用VGG网络架构进行人脸识别", formula: "L_{CE} = -\\log\\frac{e^{W_y^T f + b_y}}{\\sum_j e^{W_j^T f + b_j}}", contribution: "证明了深度网络在人脸识别中的有效性", influences: ["p1"]},
+        
+        // 2021年
+        {id: "p4", title: "SphereFace: Deep Hypersphere Embedding", authors: "Liu et al.", year: 2021, method: "SphereFace", category: "度量", 
+         core_idea: "在超球面上学习判别性特征", formula: "L = -\\frac{1}{N}\\sum_i \\log\\frac{e^{||W_{y_i}||||f_i||\\cos(m\\theta_{y_i})}}{e^{||W_{y_i}||||f_i||\\cos(m\\theta_{y_i})} + \\sum_{j\\neq y_i} e^{||W_j||||f_i||\\cos\\theta_j}}", 
+         contribution: "引入角度边界以增强类间可分性", influences: ["p2", "p3"]},
+        {id: "p5", title: "CosFace: Large Margin Cosine Loss", authors: "Wang et al.", year: 2021, method: "CosFace", category: "度量", 
+         core_idea: "使用余弦边界增强特征判别性", formula: "L = -\\frac{1}{N}\\sum_i \\log\\frac{e^{s(\\cos\\theta_{y_i} - m)}}{e^{s(\\cos\\theta_{y_i} - m)} + \\sum_{j\\neq y_i} e^{s\\cos\\theta_j}}", 
+         contribution: "简化了角度边界的实现", influences: ["p4"]},
+        {id: "p6", title: "ArcFace: Additive Angular Margin Loss", authors: "Deng et al.", year: 2021, method: "ArcFace", category: "度量", 
+         core_idea: "在角度空间添加加性边界", formula: "L = -\\frac{1}{N}\\sum_i \\log\\frac{e^{s\\cos(\\theta_{y_i} + m)}}{e^{s\\cos(\\theta_{y_i} + m)} + \\sum_{j\\neq y_i} e^{s\\cos\\theta_j}}", 
+         contribution: "提供了更清晰的几何解释和更好的性能", influences: ["p4", "p5"]},
+        
+        // 2022年
+        {id: "p7", title: "AdaFace: Quality Adaptive Margin", authors: "Kim et al.", year: 2022, method: "AdaFace", category: "度量", 
+         core_idea: "根据图像质量自适应调整边界", formula: "L = -\\frac{1}{N}\\sum_i \\log\\frac{e^{s\\cos(\\theta_{y_i} + m_i)}}{e^{s\\cos(\\theta_{y_i} + m_i)} + \\sum_{j\\neq y_i} e^{s\\cos\\theta_j}}", 
+         contribution: "提高了对不同质量图像的鲁棒性", influences: ["p6"]},
+        {id: "p8", title: "MagFace: A Universal Representation", authors: "Meng et al.", year: 2022, method: "MagFace", category: "度量", 
+         core_idea: "同时学习特征的幅度和角度", formula: "L = -\\frac{1}{N}\\sum_i \\log\\frac{e^{s||f_i||\\cos(\\theta_{y_i} + m)}}{e^{s||f_i||\\cos(\\theta_{y_i} + m)} + \\sum_{j\\neq y_i} e^{s||f_i||\\cos\\theta_j}}", 
+         contribution: "统一了特征的多个维度", influences: ["p6"]},
+        {id: "p9", title: "SimCLR for Face: Self-Supervised Learning", authors: "Chen et al.", year: 2022, method: "SimCLR-Face", category: "自监督", 
+         core_idea: "使用对比学习进行自监督预训练", formula: "L = -\\log\\frac{e^{sim(z_i, z_j)/\\tau}}{\\sum_{k=1}^{2N} \\mathbb{1}_{k\\neq i} e^{sim(z_i, z_k)/\\tau}}", 
+         contribution: "减少了对标注数据的依赖", influences: ["p6"]},
+        
+        // 2023年
+        {id: "p10", title: "TransFace: Calibrating Transformer", authors: "Dan et al.", year: 2023, method: "TransFace", category: "分析", 
+         core_idea: "分析和校准Transformer在人脸识别中的应用", formula: "\\text{Attention}(Q, K, V) = \\text{softmax}(\\frac{QK^T}{\\sqrt{d_k}})V", 
+         contribution: "揭示了Transformer的优势和局限", influences: ["p7", "p8"]},
+        {id: "p11", title: "SFace: Sigmoid-Constrained Loss", authors: "Zhong et al.", year: 2023, method: "SFace", category: "度量", 
+         core_idea: "使用Sigmoid函数约束损失函数", formula: "L = -\\frac{1}{N}\\sum_i \\log\\frac{e^{s\\cdot\\sigma(\\cos(\\theta_{y_i} + m))}}{e^{s\\cdot\\sigma(\\cos(\\theta_{y_i} + m))} + \\sum_{j\\neq y_i} e^{s\\cdot\\sigma(\\cos\\theta_j)}}", 
+         contribution: "提高了训练稳定性", influences: ["p7"]},
+        {id: "p12", title: "MoCo-Face: Momentum Contrast", authors: "He et al.", year: 2023, method: "MoCo-Face", category: "自监督", 
+         core_idea: "使用动量对比进行自监督学习", formula: "L = -\\log\\frac{e^{q\\cdot k_+/\\tau}}{e^{q\\cdot k_+/\\tau} + \\sum_{k_-} e^{q\\cdot k_-/\\tau}}", 
+         contribution: "提供了更好的自监督学习框架", influences: ["p9"]},
+        
+        // 2024年
+        {id: "p13", title: "UniFace: Unified Framework", authors: "Zhang et al.", year: 2024, method: "UniFace", category: "分析", 
+         core_idea: "统一多种人脸识别范式", formula: "L_{total} = \\lambda_1 L_{cls} + \\lambda_2 L_{metric} + \\lambda_3 L_{ssl}", 
+         contribution: "提供了统一的理论框架", influences: ["p10", "p11", "p12"]},
+        {id: "p14", title: "PromptFace: Vision-Language Model", authors: "Li et al.", year: 2024, method: "PromptFace", category: "分类", 
+         core_idea: "利用视觉-语言模型进行人脸识别", formula: "\\text{similarity}(I, T) = \\frac{f_v(I)^T f_t(T)}{||f_v(I)|| \\cdot ||f_t(T)||}", 
+         contribution: "引入了多模态学习范式", influences: ["p13"]},
+        {id: "p15", title: "FaceMAE: Masked Autoencoder", authors: "Zhou et al.", year: 2024, method: "FaceMAE", category: "自监督", 
+         core_idea: "使用掩码自编码器进行预训练", formula: "L = ||x - \\hat{x}||^2", 
+         contribution: "展示了生成式预训练的潜力", influences: ["p12", "p13"]}
+    ];
+
+    // 尝试加载外部数据，失败则使用测试数据
+    let papersData = null;
+
+    // 检查是否存在外部的 papersData
+    function loadData() {
+        return new Promise((resolve) => {
+            // 检查是否已经通过外部脚本加载了 papersData
+            if (typeof window.papersData !== 'undefined') {
+                papersData = window.papersData;
+                console.log('检测到外部 papersData，使用外部数据');
+                resolve();
+                return;
+            }
+
+            // 尝试加载外部脚本
+            const script = document.createElement('script');
+            script.src = 'papersData.js';
+            script.onload = () => {
+                if (typeof window.papersData !== 'undefined') {
+                    papersData = window.papersData;
+                    console.log('成功加载外部数据文件');
+                } else {
+                    papersData = testPapersData;
+                    console.log('外部数据文件未定义papersData，使用测试数据');
+                }
+                resolve();
+            };
+            script.onerror = () => {
+                papersData = testPapersData;
+                console.log('无法加载外部数据文件，使用测试数据');
+                resolve();
+            };
+            document.head.appendChild(script);
+            
+            // 设置超时，防止无限等待
+            setTimeout(() => {
+                if (!papersData) {
+                    papersData = testPapersData;
+                    console.log('加载超时，使用测试数据');
+                    resolve();
+                }
+            }, 2000);
+        });
+    }
+    </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", async function() {
+        // 先加载数据
+        await loadData();
+        
+        const container = document.getElementById('graph-container');
+        const loadingMsg = document.getElementById('loading');
+        const tooltip = d3.select("#tooltip");
+        const detailsContent = document.getElementById('details-content');
+        const radiusSlider = document.getElementById('radius-slider');
+
+        // 隐藏加载提示
+        if (loadingMsg) loadingMsg.style.display = 'none';
+
+        const margin = {top: 40, right: 20, bottom: 40, left: 70};
+        let width, height;
+        let nodeRadius = +radiusSlider.value;
+        let activeFilter = 'all';
+        let selectedNode = null;
+        let yScale = d3.scaleBand();
+
+        function getContainerDimensions() {
+            const rect = container.getBoundingClientRect();
+            width = rect.width;
+            height = rect.height;
+        }
+        
+        getContainerDimensions();
+
+        const svg = d3.select(container).append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("viewBox", [0, 0, width, height])
+            .style("display", "block");
+
+        const categoryColors = { '分类': '#28a745', '度量': '#dc3545', '自监督': '#ffc107', '分析': '#17a2b8' };
+
+        const simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(d => d.id).distance(120).strength(0.3))
+            .force("charge", d3.forceManyBody().strength(-150))
+            .force("collide", d3.forceCollide().radius(d => nodeRadius + 20))
+            .force("x", d3.forceX(width / 2).strength(0.05))
+            .alphaDecay(0.015);
+        
+        const gridGroup = svg.append("g").attr("class", "grid");
+        const linkGroup = svg.append("g").attr("class", "links");
+        const nodeGroup = svg.append("g").attr("class", "nodes");
+        
+        svg.append("defs").append("marker")
+            .attr("id", "arrowhead")
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 15)
+            .attr("refY", 0)
+            .attr("markerWidth", 8)
+            .attr("markerHeight", 8)
+            .attr("orient", "auto")
+          .append("path")
+            .attr("d", "M0,-5L10,0L0,5")
+            .attr("class", "arrow-head")
+            .style("fill", "#888")
+            .style("stroke", "none");
+
+        function updateGraph() {
+            let filteredPapers = (activeFilter === 'all')
+                ? papersData
+                : papersData.filter(p => p.category === activeFilter);
+
+            const paperIds = new Set(filteredPapers.map(p => p.id));
+            let filteredLinks = [];
+            papersData.forEach(paper => {
+                if (paper.influences) {
+                    paper.influences.forEach(influenceId => {
+                        if (paperIds.has(paper.id) && paperIds.has(influenceId)) {
+                             filteredLinks.push({ source: influenceId, target: paper.id });
+                        }
+                    });
+                }
+            });
+
+            const years = Array.from(new Set(filteredPapers.map(d => d.year))).sort(d3.descending);
+            
+            const yearCounts = {};
+            years.forEach(year => {
+                yearCounts[year] = filteredPapers.filter(p => p.year === year).length;
+            });
+            
+            const totalNodes = filteredPapers.length;
+            const availableHeight = height - margin.top - margin.bottom;
+            const minBandHeight = 80;
+            
+            const yearHeights = {};
+            years.forEach(year => {
+                const nodeCount = yearCounts[year];
+                const proportionalHeight = (nodeCount / totalNodes) * availableHeight;
+                yearHeights[year] = Math.max(minBandHeight, proportionalHeight);
+            });
+            
+            const totalAllocatedHeight = Object.values(yearHeights).reduce((sum, h) => sum + h, 0);
+            const heightScaleFactor = totalAllocatedHeight > availableHeight ? 
+                                     availableHeight / totalAllocatedHeight : 1;
+            
+            let currentY = margin.top;
+            const yearRanges = {};
+            years.forEach(year => {
+                const bandHeight = yearHeights[year] * heightScaleFactor;
+                yearRanges[year] = { start: currentY, height: bandHeight };
+                currentY += bandHeight;
+            });
+            
+            yScale = function(year) {
+                return yearRanges[year] ? yearRanges[year].start : margin.top;
+            };
+            
+            yScale.bandwidth = function(year) {
+                return yearRanges[year] ? yearRanges[year].height : minBandHeight;
+            };
+            
+            gridGroup.selectAll("*").remove();
+            gridGroup.selectAll(".year-band")
+                .data(years)
+                .enter().append("rect")
+                .attr("class", "year-band")
+                .attr("x", margin.left)
+                .attr("y", d => yScale(d))
+                .attr("width", width - margin.left - margin.right)
+                .attr("height", d => yScale.bandwidth(d));
+
+            gridGroup.selectAll(".year-label")
+                .data(years)
+                .enter().append("text")
+                .attr("class", "year-label")
+                .attr("x", margin.left - 10)
+                .attr("y", d => yScale(d) + yScale.bandwidth(d) / 2)
+                .attr("dy", "0.32em")
+                .text(d => d);
+
+            const nodes = filteredPapers.map((d, i) => {
+                const bandY = yScale(d.year);
+                const bandHeight = yScale.bandwidth(d.year);
+                const nodesInYear = filteredPapers.filter(p => p.year === d.year).length;
+                const indexInYear = filteredPapers.filter(p => p.year === d.year).indexOf(d);
+                
+                // 计算可用宽度
+                const availableWidth = width - margin.left - margin.right - nodeRadius * 2;
+                
+                // 使用更智能的初始化：在年份带内均匀分布，添加随机偏移
+                let initialX;
+                if (nodesInYear === 1) {
+                    // 单个节点放在中间
+                    initialX = width / 2;
+                } else {
+                    // 多个节点：均匀分布 + 随机偏移
+                    const spacing = availableWidth / (nodesInYear + 1);
+                    const baseX = margin.left + nodeRadius + spacing * (indexInYear + 1);
+                    const randomOffset = (Math.random() - 0.5) * spacing * 0.4; // 40%的随机偏移
+                    initialX = baseX + randomOffset;
+                }
+                
+                // Y轴也添加一些随机性，但保持在年份带内
+                const padding = nodeRadius + 10;
+                const availableYRange = bandHeight - padding * 2;
+                const randomY = bandY + padding + Math.random() * availableYRange;
+                
+                return {
+                    ...d,
+                    x: d.x || initialX,
+                    y: d.y || randomY
+                };
+            });
+            
+            const links = filteredLinks;
+
+            const node = nodeGroup.selectAll("g.node")
+                .data(nodes, d => d.id)
+                .join(
+                    enter => {
+                        const g = enter.append("g").attr("class", "node");
+                        g.append("circle").attr("r", nodeRadius).attr("fill", d => categoryColors[d.category] || '#ccc');
+                        g.append("text").text(d => d.method).attr("dy", d => nodeRadius + 12);
+                        g.call(drag(simulation));
+                        g.on("mouseover", handleMouseOver).on("mouseout", handleMouseOut).on("click", handleClick);
+                        return g;
+                    },
+                    update => update,
+                    exit => exit.remove()
+                );
+            
+            const link = linkGroup.selectAll("line.link")
+                .data(links, d => `${d.source.id || d.source}-${d.target.id || d.target}`)
+                .join("line")
+                .attr("class", "link")
+                .attr("marker-end", "url(#arrowhead)");
+
+            simulation.nodes(nodes);
+            simulation.force("link").links(links);
+            
+            // 更新X轴力，确保节点向中心靠拢而不是两边
+            simulation.force("x", d3.forceX(width / 2).strength(0.05));
+            
+            simulation.alpha(1).restart();
+            
+            simulation.on("tick", () => {
+                nodes.forEach(d => {
+                    const bandY = yScale(d.year);
+                    const bandHeight = yScale.bandwidth(d.year);
+                    const padding = nodeRadius + 5;
+                    
+                    // 限制X轴范围，防止节点跑到边界
+                    const minX = margin.left + padding + 20;
+                    const maxX = width - margin.right - padding - 20;
+                    d.x = Math.max(minX, Math.min(maxX, d.x));
+                    
+                    // 限制Y轴在年份带内
+                    d.y = Math.max(bandY + padding, Math.min(bandY + bandHeight - padding, d.y));
+                });
+                
+                // 处理上下级关系的节点 - 更温和的约束
+                links.forEach(link => {
+                    const sourceNode = typeof link.source === 'object' ? link.source : nodes.find(n => n.id === link.source);
+                    const targetNode = typeof link.target === 'object' ? link.target : nodes.find(n => n.id === link.target);
+                    
+                    if (sourceNode && targetNode && sourceNode.year === targetNode.year) {
+                        const minSpacing = nodeRadius * 2;
+                        
+                        // 只在节点距离过近时调整
+                        if (Math.abs(targetNode.y - sourceNode.y) < minSpacing) {
+                            const midY = (sourceNode.y + targetNode.y) / 2;
+                            const bandY = yScale(sourceNode.year);
+                            const bandHeight = yScale.bandwidth(sourceNode.year);
+                            const padding = nodeRadius + 5;
+                            
+                            // 使用更柔和的调整
+                            const adjustment = minSpacing / 2;
+                            sourceNode.y = Math.max(bandY + padding, Math.min(bandY + bandHeight - padding, midY - adjustment));
+                            targetNode.y = Math.max(bandY + padding, Math.min(bandY + bandHeight - padding, midY + adjustment));
+                        } else if (targetNode.y < sourceNode.y - nodeRadius) {
+                            // 确保被引用的在上方
+                            const diff = (targetNode.y - sourceNode.y) * 0.1; // 10% 的调整强度
+                            sourceNode.y += diff;
+                            targetNode.y -= diff;
+                        }
+                    }
+                });
+            
+                link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+                node.attr("transform", d => `translate(${d.x},${d.y})`);
+            });
+
+            if (selectedNode && !paperIds.has(selectedNode.id)) {
+                clearDetails();
+            }
+        }
+        
+        function handleMouseOver(event, d) {
+            tooltip.style("opacity", 1)
+                   .html(`<strong>${d.title}</strong>`)
+                   .style("left", (event.pageX + 15) + "px")
+                   .style("top", (event.pageY - 10) + "px");
+            highlight(d);
+        }
+        
+        function handleMouseOut() {
+            tooltip.style("opacity", 0);
+            unhighlight();
+        }
+
+        function handleClick(event, d) {
+            selectedNode = d;
+            displayDetails(d);
+            nodeGroup.selectAll("g.node").classed("selected", n => n.id === d.id);
+            unhighlight();
+        }
+
+        function displayDetails(paper) {
+            const currentFormula = paper.formula;
+            
+            detailsContent.innerHTML = `
+                <h2>${paper.title}</h2>
+                <p><strong>${paper.authors} (${paper.year})</strong></p>
+                <p><strong>方法:</strong> ${paper.method}</p>
+                <h4>核心思想</h4><p>${paper.core_idea}</p>
+                <h4>关键公式</h4><div id="formula-display" data-formula="${currentFormula || ''}"></div>
+                <h4>重要贡献</h4><p>${paper.contribution}</p>
+            `;
+            
+            const formulaDiv = document.getElementById('formula-display');
+            if (formulaDiv) {
+                if (currentFormula && currentFormula !== 'N/A' && currentFormula !== 'Policy-based RL Loss') {
+                    try {
+                        katex.render(currentFormula, formulaDiv, {
+                            displayMode: true,
+                            throwOnError: false,
+                            strict: 'ignore'
+                        });
+                        const katexHtml = formulaDiv.querySelector('.katex-html');
+                        if (katexHtml) {
+                            katexHtml.style.display = 'none';
+                        }
+                    } catch (e) {
+                        formulaDiv.textContent = '公式渲染失败: ' + currentFormula;
+                    }
+                } else {
+                    formulaDiv.textContent = currentFormula || 'N/A';
+                }
+            }
+        }
+
+        function clearDetails() {
+            selectedNode = null;
+            nodeGroup.selectAll("g.node").classed("selected", false);
+            detailsContent.innerHTML = `<div class="details-placeholder"><h3>欢迎使用</h3><p>点击左侧图中的节点<br>在此处查看详细信息</p></div>`;
+        }
+        
+        function highlight(d) {
+            if (!d) return;
+            const predecessors = new Set();
+            const successors = new Set();
+            
+            linkGroup.selectAll("line.link").data().forEach(l => {
+                const sourceId = l.source.id || l.source;
+                const targetId = l.target.id || l.target;
+                if (targetId === d.id) predecessors.add(sourceId);
+                if (sourceId === d.id) successors.add(targetId);
+            });
+
+            nodeGroup.selectAll("g.node")
+                .classed("faded", n => n.id !== d.id && !predecessors.has(n.id) && !successors.has(n.id))
+                .filter(n => n.id === d.id).classed("highlighted", true)
+                .filter(n => predecessors.has(n.id)).classed("predecessor", true)
+                .filter(n => successors.has(n.id)).classed("successor", true);
+            
+            linkGroup.selectAll("line.link")
+                .classed("faded", l => {
+                    const sourceId = l.source.id || l.source;
+                    const targetId = l.target.id || l.target;
+                    return sourceId !== d.id && targetId !== d.id;
+                })
+                .filter(l => {
+                    const targetId = l.target.id || l.target;
+                    return targetId === d.id;
+                }).classed("predecessor", true)
+                .filter(l => {
+                    const sourceId = l.source.id || l.source;
+                    return sourceId === d.id;
+                }).classed("successor", true);
+        }
+        
+        function unhighlight() {
+            nodeGroup.selectAll("g.node").classed("faded highlighted predecessor successor", false);
+            linkGroup.selectAll("line.link").classed("faded predecessor successor", false);
+        }
+
+        function updateNodeRadius(radius) {
+            nodeRadius = +radius;
+            nodeGroup.selectAll("circle").transition().duration(200).attr("r", nodeRadius);
+            nodeGroup.selectAll("text").transition().duration(200).attr("dy", nodeRadius + 12);
+            svg.select("#arrowhead").attr("refX", nodeRadius + 10);
+            simulation.force("collide").radius(nodeRadius + 15);
+            simulation.alpha(0.3).restart();
+        }
+        
+        function drag(simulation) {
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+            function dragged(event, d) {
+                const bandY = yScale(d.year);
+                const bandHeight = yScale.bandwidth(d.year);
+                const padding = nodeRadius + 5;
+                
+                d.fx = Math.max(margin.left + padding, Math.min(width - margin.right - padding, event.x));
+                d.fy = Math.max(bandY + padding, Math.min(bandY + bandHeight - padding, event.y));
+            }
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+            return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+        }
+
+        d3.selectAll('.filter-btn').on('click', function() {
+            d3.selectAll('.filter-btn').classed('active', false);
+            d3.select(this).classed('active', true);
+            activeFilter = d3.select(this).attr('data-filter');
+            updateGraph();
+        });
+
+        radiusSlider.addEventListener('input', (e) => updateNodeRadius(e.target.value));
+
+        window.addEventListener('resize', () => {
+            getContainerDimensions();
+            svg.attr("viewBox", [0, 0, width, height]);
+            updateGraph();
+        });
+
+        setTimeout(() => {
+            getContainerDimensions();
+            svg.attr("viewBox", [0, 0, width, height]);
+            updateGraph();
+            updateNodeRadius(radiusSlider.value);
+        }, 100);
+    });
+    </script>
+</body>
+</html>
