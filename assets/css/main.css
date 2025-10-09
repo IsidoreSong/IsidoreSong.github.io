@@ -189,6 +189,11 @@ td img:hover {
         cursor: pointer;
       }
 
+      .transcript-link {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
       html {
         scroll-behavior: smooth;
       }

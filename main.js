@@ -446,6 +446,7 @@ function initializeModal() {
   
   var modalImg = document.getElementById("img01");
   var images = document.getElementsByClassName('publication-image');
+  var transcriptLinks = document.getElementsByClassName('transcript-link');
   
   // 移除旧的事件监听器
   for (var i = 0; i < images.length; i++) {
@@ -458,6 +459,21 @@ function initializeModal() {
     img.onclick = function(){
       modal.style.display = "block";
       modalImg.src = this.src;
+    }
+  }
+
+  // 移除旧的事件监听器
+  for (var i = 0; i < transcriptLinks.length; i++) {
+    transcriptLinks[i].onclick = null;
+  }
+
+  // 添加新的事件监听器
+  for (var i = 0; i < transcriptLinks.length; i++) {
+    var link = transcriptLinks[i];
+    link.onclick = function(e){
+      e.preventDefault();
+      modal.style.display = "block";
+      modalImg.src = this.href;
     }
   }
 }

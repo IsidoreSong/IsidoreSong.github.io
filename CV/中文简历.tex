@@ -1,5 +1,6 @@
 % !TEX TS-program = XeLaTex
 \documentclass[10pt, letterpaper]{article}
+% \usepackage{lwarp}
 
 % Packages:
 \usepackage[
@@ -40,10 +41,9 @@
 \usepackage{needspace} % for avoiding page brake right after the section title
 \usepackage{iftex} % check if engine is pdflatex, xetex or luatex
 \usepackage{fontspec} % Required for XeLaTeX/LuaLaTeX
-\usepackage{charter}
 
 % Font setup for Chinese characters
-\usepackage{xeCJK}
+\ifdefined\HCode\else\usepackage{xeCJK}\fi
 % \setmainfont{Noto Serif CJK SC}
 
 % Ensure that generate pdf is machine readable/ATS parsable:
